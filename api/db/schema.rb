@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171217213603) do
+ActiveRecord::Schema.define(version: 20171217214552) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "phones", force: :cascade do |t|
+    t.string "number"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_phones_on_user_id"
+  end
 
   create_table "posts", force: :cascade do |t|
     t.text "caption"
@@ -60,5 +68,6 @@ ActiveRecord::Schema.define(version: 20171217213603) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "phones", "users"
   add_foreign_key "posts", "users"
 end
