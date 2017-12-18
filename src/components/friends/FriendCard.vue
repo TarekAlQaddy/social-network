@@ -1,13 +1,15 @@
 <template>
-    <div>
+    <!-- <div> -->
     <div class="ui special cards">
       <div class="card">
         <div class="blurring dimmable image">
           <div class="ui dimmer">
             <div class="content">
-              <div class="ui inverted button">Profile</div>
-              <div class="ui horizontal inverted divider"></div>
-              <button v-on:click='unfriendClicked' class="ui red ok inverted button">Unfriend</button>
+              <div class="container">
+                <div class="ui inverted button">Profile</div>
+                <div class="ui horizontal inverted divider"></div>
+                <button v-on:click='unfriendClicked' class="ui red ok inverted button">Unfriend</button>
+              </div>
             </div>
           </div>
           <img src="../../assets/F-go7vvI.jpeg">
@@ -24,7 +26,7 @@
       </div>
     </div>
     <!-- modal for unfriend confirmation -->
-    <div class="ui basic modal">
+    <!-- <div class="ui basic modal">
       <div class="ui icon header">
         <i class="remove user icon"></i>
         Unfriend {{ user.nickname }}
@@ -43,7 +45,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -70,7 +72,7 @@ export default {
 
 
 <style scoped>
-  .center {
+  /* .center {
     text-align: center;
-  }
+  } */
 </style>
