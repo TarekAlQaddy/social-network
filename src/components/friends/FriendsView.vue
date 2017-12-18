@@ -4,19 +4,11 @@
       <i class="circular users icon"></i>
       Your Friends
     </h2>
-    <div class="row">
-      <div class="column">
+    <div class="ui four cards">
         <friend-card />
-      </div>
-      <div class="column">
         <friend-card />
-      </div>
-      <div class="column">
         <friend-card />
-      </div>
-      <div class="column">
         <friend-card />
-      </div>
     </div>
   </div>
 </template>
