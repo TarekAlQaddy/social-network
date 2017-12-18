@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import Main from '@/components/Main'
-import FriendCard from '@/components/friends/FriendCard'
+import FriendsView from '@/components/friends/FriendsView'
 
 Vue.use(Router)
 
@@ -18,13 +18,12 @@ export default new Router({
           path: 'home',
           name: 'home',
           component: Home
-        },
-        {
-          path: 'friend',
-          name: 'friend',
-          component: FriendCard
         }
       ]
+    }, {
+      path: '/friends',
+      name: 'view_friends',
+      component: FriendsView
     }
   ]
 })

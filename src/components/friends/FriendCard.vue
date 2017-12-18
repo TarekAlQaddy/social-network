@@ -5,16 +5,9 @@
         <div class="blurring dimmable image">
           <div class="ui dimmer">
             <div class="content">
-              <div class="center">
-                <div class="row">
-                  <!-- TODO -->
-                  <div class="ui inverted button">Profile</div>
-                </div>
-                <div class="ui horizontal divider"></div>
-                <div class="row">
-                  <button v-on:click='unfriendClicked' class="ui red ok inverted button">Unfriend</button>
-                </div>
-              </div>
+              <div class="ui inverted button">Profile</div>
+              <div class="ui horizontal inverted divider"></div>
+              <button v-on:click='unfriendClicked' class="ui red ok inverted button">Unfriend</button>
             </div>
           </div>
           <img src="../../assets/F-go7vvI.jpeg">
