@@ -19,17 +19,19 @@ export default new Router({
       name: 'main',
       component: Main,
       redirect: '/home',
+      meta: { auth: true },
       children: [
         {
           path: 'home',
           name: 'home',
           component: Home
+        },
+        {
+          path: 'friends',
+          name: 'view_friends',
+          component: FriendsView
         }
       ]
-    }, {
-      path: '/friends',
-      name: 'view_friends',
-      component: FriendsView
     }
   ]
 })
