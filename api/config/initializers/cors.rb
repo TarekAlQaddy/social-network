@@ -12,6 +12,6 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     resource '*',
       headers: :any,
       methods: [:get, :post, :put, :patch, :delete, :options, :head],
-      expose: ["Access-Control-Expose-Headers", "ETag"]
+      expose: ["access-token", "token-type", "client", "uid", "ETag"]
   end
 end
