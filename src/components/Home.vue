@@ -8,6 +8,7 @@
           <div class="image">
             <img style="height: 150px" src="static/js.svg" alt="">
           </div>
+          {{ $auth.user() }}
           Elliot Fu is a film-maker from New York.
         </div>
       </div>
@@ -19,7 +20,7 @@
   export default {
     name: 'home',
     mounted () {
-      console.log(this.$auth.user())
+      // console.log(this.$auth.user())
     }
   }
 </script>

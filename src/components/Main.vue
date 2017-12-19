@@ -27,12 +27,10 @@
           Search
         </a>
       </router-link>
-      <router-link :to="{ name: 'home' }">
-        <a class="item">
-          <i class="sign out icon"></i>
-          Logout
-        </a>
-      </router-link>
+      <a class="item" @click="$auth.logout()">
+        <i class="sign out icon"></i>
+        Logout
+      </a>
     </div>
     <!--<div style="margin-left: 18rem" class="ui top fixed huge inverted menu">-->
       <!--<div class="item">-->
