@@ -8,7 +8,7 @@ import VueAuth from '@websanova/vue-auth'
 
 Vue.config.productionTip = false
 Vue.use(VueResource)
-Vue.http.options.root = 'http://localhost:1112'
+Vue.http.options.root = 'http://localhost:3000'
 Vue.router = router
 
 Vue.use(VueAuth, {
