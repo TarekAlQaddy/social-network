@@ -23,12 +23,7 @@ export default {
   },
   data () {
     return {
-      friends: [{
-        id: 1,
-        nickname: '3abfatta7',
-        firstName: '3ab',
-        lastName: 'Fattah'
-      }],
+      friends: [],
       toBeDeletedIndex: -1,
       deleteRequest: false
     }
@@ -50,14 +45,8 @@ export default {
     }
   },
   beforeCreate: async function () {
-    let headers = {
-      'access-token': 'D1knepNNt6rqu6Mz-5odpQ',
-      'client': 'H3RwHFFkkOaOJU7FkL-LGg',
-      'uid': 'test@test.com',
-      'token-type': 'Bearer'
-    }
     try {
-      let response = await this.$http.get('http://localhost:3000/friendships', { headers })
+      let response = await this.$http.get('http://localhost:3000/friendships')
       this.friends = response.body
     } catch (e) {
       // TODO: Handle this
