@@ -6,9 +6,9 @@
     </h2>
     <div class="ui four cards special">
         <friend-card v-for='(user, index) in friends'
-          :key='user.id' :user='user' @remove-request='removeRequest(index)'/>
+          :key='user.id' :user='user' @removeRequest='removeRequest(index)'/>
     </div>
-    <confirm-modal v-show="false" :user="toBeDeleted"/>
+    <confirm-modal @confirmDelete='unfriend' :user="toBeDeleted"/>
   </div>
 </template>
 
@@ -25,16 +25,23 @@ export default {
     return {
       friends: [{
         id: 1,
-        nickname: '3abfatta7'
+        nickname: '3abfatta7',
+        firstName: '3ab',
+        lastName: 'Fattah'
       }],
-      toBeDeletedIndex: -1
+      toBeDeletedIndex: -1,
+      deleteRequest: false
     }
   },
   methods: {
     removeRequest: function (index) {
-      alert(index)
-      toBeDeletedIndex = index
-      // TODO: make model apper
+      this.toBeDeletedIndex = index
+      $('.ui.modal').modal('show')
+    },
+    unfriend: async function () {
+      let friend = friends[toBeDeletedIndex]
+      // Delete request to the api to delete this friendship
+      console.log(friend.id)
     }
   },
   computed: {

@@ -13,36 +13,15 @@
       <img src="../../assets/F-go7vvI.jpeg">
     </div>
     <div class="content">
-      <a class="header">{{ user.nickname }}</a>
+      <a class="header">{{ nickname }}</a>
     </div>
     <div class="extra content">
       <a>
         <i class="users icon"></i>
-        Friends since DATE
+        Friends
       </a>
     </div>
   </div>
-    <!-- modal for unfriend confirmation -->
-    <!-- <div class="ui basic modal">
-      <div class="ui icon header">
-        <i class="remove user icon"></i>
-        Unfriend {{ user.nickname }}
-      </div>
-      <div class="ui center aligned content">
-        <span class="center aligned">Are you sure you want to unfriend {{ user.nickname }} ?</span>
-      </div>
-      <div class="actions">
-        <div class="ui basic cancel inverted button">
-          <i class="remove icon"></i>
-          No
-        </div>
-        <div class="ui red ok inverted button">
-          <i class="checkmark icon"></i>
-          Yes
-        </div>
-      </div>
-    </div>
-  </div> -->
 </template>
 
 <script>
@@ -62,6 +41,11 @@ export default {
     $('.card .image').dimmer({
       on: 'hover'
     })
+  },
+  computed: {
+    nickname: function () {
+      return this.user.nickname || `${this.user.firstName} ${this.user.lastName}`
+    }
   }
 }
 </script>
