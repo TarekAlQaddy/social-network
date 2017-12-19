@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171218133302) do
+ActiveRecord::Schema.define(version: 20171219212835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,10 @@ ActiveRecord::Schema.define(version: 20171218133302) do
     t.date "birthdate"
     t.string "marital_status"
     t.text "about_me"
+    t.string "profile_picture_file_name"
+    t.string "profile_picture_content_type"
+    t.integer "profile_picture_file_size"
+    t.datetime "profile_picture_updated_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
