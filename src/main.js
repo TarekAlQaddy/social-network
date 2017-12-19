@@ -15,8 +15,6 @@ Vue.use(VueAuth, {
   auth: require('@websanova/vue-auth/drivers/auth/devise'),
   http: require('@websanova/vue-auth/drivers/http/vue-resource.1.x'),
   router: require('@websanova/vue-auth/drivers/router/vue-router.2.x'),
-  // tokenName: 'access-token',
-  // authType: 'devise',
   loginData: { url: 'auth/sign_in', method: 'POST', redirect: '/home' },
   registerData: { url: 'auth', method: 'POST', redirect: '/home', fetchUser: true },
   logoutData: { url: 'auth/sign_out', method: 'DELETE', redirect: '/login', makeRequest: true },
