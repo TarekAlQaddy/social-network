@@ -15,6 +15,7 @@
         <div v-show="currentState === viewStates.LOGIN" class="login-login ui blue segment">
           <h2 style="text-align: center">Login</h2>
           <h2>{{ $auth.check() }}</h2>
+          <h2>{{ $auth.user() }}</h2>
           <div id="login-form" class="ui form">
             <div class="field">
               <label for="login-email">Email</label>
@@ -130,7 +131,6 @@
           params: loginData,
           success (a) {
             console.log(1)
-            console.log(a)
           },
           error () {
             console.log(0)
