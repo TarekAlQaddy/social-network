@@ -2,75 +2,76 @@
   <div id="main-container">
     <div class="layout ">
       <transition name="fade">
-        <div v-show="currentState === loginState.CHOOSE" class="login-choose">
+        <div v-show="currentState === viewStates.CHOOSE" class="login-choose">
           <h2 class="white-color">Social Network</h2>
           <h6 class="white-color">Don't Sign up, Facebook is better !</h6>
           <div class="">
-            <div class="ui inverted white button" @click="currentState = loginState.LOGIN">Login</div>
-            <div class="ui inverted blue button" @click="currentState = loginState.SIGNUP">Sign up</div>
+            <div class="ui inverted white button" @click="currentState = viewStates.LOGIN">Login</div>
+            <div class="ui inverted blue button" @click="currentState = viewStates.SIGNUP">Sign up</div>
           </div>
         </div>
       </transition>
       <transition name="fade">
-        <div v-show="currentState === loginState.LOGIN" class="login-login ui blue segment">
+        <div v-show="currentState === viewStates.LOGIN" class="login-login ui blue segment">
           <h2 style="text-align: center">Login</h2>
+          <h2>{{ $auth.check() }}</h2>
           <div id="login-form" class="ui form">
             <div class="field">
               <label for="login-email">Email</label>
-              <input id="login-email" name="login-email" v-model="login.email" type="email">
+              <input id="login-email" name="login-email" v-model="loginUser.email" type="email">
             </div>
             <div class="field">
               <label for="login-password">Password</label>
-              <input id="login-password" name="login-password" v-model="login.password" type="password">
+              <input id="login-password" name="login-password" v-model="loginUser.password" type="password">
             </div>
           </div>
           <div style="margin-top: 25px; text-align: right">
-            <div class="ui black button" @click="currentState = loginState.CHOOSE">Cancel</div>
-            <div class="ui blue button" :class="{ 'disabled': !validLoginForm }">Login</div>
+            <div class="ui black button" @click="currentState = viewStates.CHOOSE">Cancel</div>
+            <div class="ui blue button" @click="login" :class="{ 'disabled': !validLoginForm }">Login</div>
           </div>
         </div>
       </transition>
       <transition name="fade">
-        <div v-show="currentState === loginState.SIGNUP" class="login-login ui blue segment">
+        <div v-show="currentState === viewStates.SIGNUP" class="login-login ui blue segment">
           <h2 style="text-align: center">Sign up</h2>
           <div id="signup-form" class="ui form">
             <div class="two fields">
               <div class="field">
                 <label for="signup-first-name">First Name</label>
-                <input id="signup-first-name" name="signup-first-name" v-model="signup.firstName" type="text">
+                <input id="signup-first-name" name="signup-first-name" v-model="signupUser.firstName" type="text">
               </div>
               <div class="field">
                 <label for="signup-last-name">Last Name</label>
-                <input id="signup-last-name" name="signup-last-name" v-model="signup.lastName" type="text">
+                <input id="signup-last-name" name="signup-last-name" v-model="signupUser.lastName" type="text">
               </div>
             </div>
             <div class="field">
               <label for="signup-email">Email</label>
-              <input id="signup-email" name="signup-email" v-model="signup.email" type="email">
+              <input id="signup-email" name="signup-email" v-model="signupUser.email" type="email">
             </div>
             <div class="field">
               <label for="signup-password">Password</label>
-              <input id="signup-password" name="signup-email" v-model="signup.password" type="password">
+              <input id="signup-password" name="signup-email" v-model="signupUser.password" type="password">
             </div>
             <div class="inline fields">
               <label>Gender</label>
               <div class="field">
                 <label for="gender-male">Male</label>
-                <input type="radio" id="gender-male" v-model="signup.gender" value="male">
+                <input type="radio" id="gender-male" v-model="signupUser.gender" value="male">
               </div>
               <div class="field">
                 <label for="gender-female">Female</label>
-                <input type="radio" id="gender-female" v-model="signup.gender" value="female">
+                <input type="radio" id="gender-female" v-model="signupUser.gender" value="female">
               </div>
             </div>
             <div class="field">
               <label for="signup-birthdate">Birthdate</label>
-              <input type="date" id="signup-birthdate" name="signup-birthdate"  v-model="signup.birthdate">
+              <input type="date" id="signup-birthdate" name="signup-birthdate"  v-model="signupUser.birthdate">
             </div>
           </div>
           <div style="margin-top: 25px; text-align: right">
-            <div class="ui black button" @click="currentState = loginState.CHOOSE">Cancel</div>
-            <div class="ui green button" :class="{ 'disabled': !validLoginForm }">Sign up</div>
+            <div class="ui black button" @click="currentState = viewStates.CHOOSE">Cancel</div>
+            <div class="ui green button" @click="signup" :class="{ 'disabled': !validLoginForm }">Sign up</div>
           </div>
         </div>
       </transition>
@@ -81,31 +82,31 @@
 <script>
   export default {
     watch: {
-      login: {
+      loginUser: {
         handler: function () {
           this.validLoginForm = $('#login-form').form('is valid')
         },
         deep: true
       },
-      signup: {
+      signupUser: {
         handler: function () {
-          this.validLoginForm = $('#signup-form').form('is valid')
+          this.validSignupForm = $('#signup-form').form('is valid')
         },
         deep: true
       }
     },
     data () {
       return {
-        loginState: {
+        viewStates: {
           CHOOSE: 0,
           LOGIN: 1,
           SIGNUP: 2
         },
-        login: {
+        loginUser: {
           email: null,
           password: null
         },
-        signup: {
+        signupUser: {
           firstName: null,
           lastName: null,
           gender: 'male',
@@ -114,7 +115,49 @@
           password: null
         },
         currentState: 0,
-        validLoginForm: false
+        validLoginForm: false,
+        validSignupForm: false
+      }
+    },
+    methods: {
+      login () {
+        if (!this.validLoginForm) return
+        let loginData = {
+          email: this.loginUser.email,
+          password: this.loginUser.password
+        }
+        this.$auth.login({
+          params: loginData,
+          success (a) {
+            console.log(1)
+            console.log(a)
+          },
+          error () {
+            console.log(0)
+          },
+          rememberMe: true
+        })
+      },
+      signup () {
+        if (!this.validSignupForm) return
+        let registerData = {
+          email: this.signupUser.email,
+          password: this.signupUser.password,
+          first_name: this.signupUser.firstName,
+          last_name: this.signupUser.lastName,
+          gender: this.signupUser.gender,
+          birthdate: this.signupUser.birthdate
+        }
+        this.$auth.register({
+          params: registerData,
+          success (a) {
+            console.log(a)
+          },
+          error () {
+            console.log(0)
+          },
+          rememberMe: true
+        })
       }
     },
     mounted () {

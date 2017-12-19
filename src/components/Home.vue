@@ -17,7 +17,10 @@
 
 <script>
   export default {
-    name: 'home'
+    name: 'home',
+    mounted () {
+      console.log(this.$auth.user())
+    }
   }
 </script>
 
