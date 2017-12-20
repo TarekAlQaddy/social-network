@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
 
     def configure_permitted_parameters
       params = [ :first_name, :last_name, :nickname, :gender,
-        :hometown, :about_me, :birthdate, :marital_status ]
+        :hometown, :about_me, :birthdate, :marital_status, :profile_picture ]
 
       devise_parameter_sanitizer.permit(:sign_up, keys: params)
       devise_parameter_sanitizer.permit(:edit, keys: params)
