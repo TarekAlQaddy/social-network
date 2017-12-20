@@ -44,13 +44,14 @@ export default {
       return this.friends[this.toBeDeletedIndex] || {}
     }
   },
-  beforeCreate: async function () {
+  beforeCreate: function () {
+    console.log(this.$http)
     try {
-      let response = await this.$http.get('http://localhost:3000/friendships')
+      let response = this.$http.get('friendships')
       this.friends = response.body
     } catch (e) {
       // TODO: Handle this
-      console.log(e)
+      // console.log(e)
     }
   }
 }
