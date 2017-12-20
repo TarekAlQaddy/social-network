@@ -18,9 +18,18 @@ class FriendshipsController < ApplicationController
     end
   end
 
-  # DELETE /friendships/1
+  # DELETE /friendships/
+  # body:
+  # {
+  #   user_id,  <= must equal the id of the current loggedin user
+  #   friend_id
+  # }
   def destroy
-    Friendship.find(friendship_params).destroy
+    if current_user[:id] == friendship_params[:user_id]
+      Friendship.find(friendship_params).destroy
+    else
+      render status: 401
+    end
   end
 
   private

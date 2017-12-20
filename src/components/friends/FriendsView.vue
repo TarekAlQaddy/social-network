@@ -6,9 +6,9 @@
     </h2>
     <div class="ui four cards special">
         <friend-card v-for='(user, index) in friends'
-          :key='user.id' :user='user' @remove-request='removeRequest(index)'/>
+          :key='user.id' :user='user' @removeRequest='removeRequest(index)'/>
     </div>
-    <confirm-modal v-show="false" :user="toBeDeleted"/>
+    <confirm-modal @confirmDelete='unfriend' :user="toBeDeleted"/>
   </div>
 </template>
 
@@ -23,18 +23,20 @@ export default {
   },
   data () {
     return {
-      friends: [{
-        id: 1,
-        nickname: '3abfatta7'
-      }],
-      toBeDeletedIndex: -1
+      friends: [],
+      toBeDeletedIndex: -1,
+      deleteRequest: false
     }
   },
   methods: {
     removeRequest: function (index) {
-      alert(index)
-      toBeDeletedIndex = index
-      // TODO: make model apper
+      this.toBeDeletedIndex = index
+      $('.ui.modal').modal('show')
+    },
+    unfriend: async function () {
+      let friend = friends[toBeDeletedIndex]
+      // Delete request to the api to delete this friendship
+      console.log(friend.id)
     }
   },
   computed: {
@@ -43,14 +45,8 @@ export default {
     }
   },
   beforeCreate: async function () {
-    let headers = {
-      'access-token': 'D1knepNNt6rqu6Mz-5odpQ',
-      'client': 'H3RwHFFkkOaOJU7FkL-LGg',
-      'uid': 'test@test.com',
-      'token-type': 'Bearer'
-    }
     try {
-      let response = await this.$http.get('http://localhost:3000/friendships', { headers })
+      let response = await this.$http.get('http://localhost:3000/friendships')
       this.friends = response.body
     } catch (e) {
       // TODO: Handle this

@@ -12,7 +12,7 @@
         <i class="remove icon"></i>
         No
       </div>
-      <div class="ui red ok inverted button">
+      <div @click='confirmed' class="ui red ok inverted button">
         <i class="checkmark icon"></i>
         Yes
       </div>
@@ -22,7 +22,12 @@
 
 <script>
 export default {
-  props: ['user']
+  props: ['user'],
+  methods: {
+    confirmed: function () {
+      this.$emit('confirmDelete')
+    }
+  }
 }
 </script>
 
