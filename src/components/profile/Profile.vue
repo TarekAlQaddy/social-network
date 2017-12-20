@@ -3,7 +3,10 @@
     <div class="ui segment">
       <div id="profile-picture-container">
         <div class="upper-half">
-          <img :src="$auth.user().profile_picture_file_name || '/static/js.svg'">
+          <div class="image-container">
+            <img :src="$auth.user().profile_picture_file_name || '/static/js.svg'">
+            <h1>{{ userName }}</h1>
+          </div>
         </div>
       </div>
     </div>
@@ -68,7 +71,7 @@
       <div class="nine wide column">
         <div class="ui fluid card" v-for="post in posts">
           <div class="content">
-            <div class="header">{{ user.nickname ? user.nickname : `${user.first_name} ${user.last_name}` }}</div>
+            <div class="header">{{ userName }}</div>
             <div class="meta">{{ post.created_at | moment('LLL') }}</div>
             <div class="description">
               <div class="image" v-if="post.photo_file_name">
@@ -116,6 +119,9 @@
     computed: {
       user () {
         return this.$auth.user()
+      },
+      userName () {
+        return this.user.nickname ? this.user.nickname : `${this.user.first_name} ${this.user.last_name}`
       }
     },
     methods: {
@@ -160,13 +166,19 @@
     background-size: cover;
     position: relative;
   }
+  #profile-picture-container .image-container {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 50%);
+  }
+  #profile-picture-container .image-container h1 {
+    margin-top: 0;
+    text-align: center;
+  }
   #profile-picture-container img {
     width: 200px;
     height: 200px;
-    position: absolute;
-    left: 50%;
-    bottom: -100px;
-    transform: translateX(-50%);
     border-radius: 50%;
     border: 5px solid #fff;
   }
