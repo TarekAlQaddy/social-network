@@ -14,8 +14,6 @@
       <transition name="fade">
         <div v-show="currentState === viewStates.LOGIN" class="login-login ui blue segment">
           <h2 style="text-align: center">Login</h2>
-          <h2>{{ $auth.check() }}</h2>
-          <h2>{{ $auth.user() }}</h2>
           <div id="login-form" class="ui form">
             <div class="field">
               <label for="login-email">Email</label>
@@ -52,7 +50,7 @@
             </div>
             <div class="field">
               <label for="signup-password">Password</label>
-              <input id="signup-password" name="signup-email" v-model="signupUser.password" type="password">
+              <input id="signup-password" name="signup-password" v-model="signupUser.password" type="password">
             </div>
             <div class="inline fields">
               <label>Gender</label>
@@ -72,7 +70,7 @@
           </div>
           <div style="margin-top: 25px; text-align: right">
             <div class="ui black button" @click="currentState = viewStates.CHOOSE">Cancel</div>
-            <div class="ui green button" @click="signup" :class="{ 'disabled': !validLoginForm }">Sign up</div>
+            <div class="ui green button" @click="signup" :class="{ 'disabled': !validSignupForm }">Sign up</div>
           </div>
         </div>
       </transition>
@@ -129,13 +127,8 @@
         }
         this.$auth.login({
           params: loginData,
-          success (a) {
-            console.log(1)
-          },
-          error () {
-            console.log(0)
-          },
-          rememberMe: true
+          rememberMe: true,
+          fetchUser: true
         })
       },
       signup () {
@@ -150,13 +143,8 @@
         }
         this.$auth.register({
           params: registerData,
-          success (a) {
-            console.log(a)
-          },
-          error () {
-            console.log(0)
-          },
-          rememberMe: true
+          rememberMe: true,
+          fetchUser: true
         })
       }
     },
