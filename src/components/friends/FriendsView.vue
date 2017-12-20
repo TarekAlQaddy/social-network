@@ -34,9 +34,22 @@ export default {
       $('.ui.modal').modal('show')
     },
     unfriend: async function () {
-      let friend = friends[toBeDeletedIndex]
+      let friend = this.friends[this.toBeDeletedIndex]
       // Delete request to the api to delete this friendship
-      console.log(friend.id)
+      let friendId = friend.id
+      let userId = this.$auth.user().id || 6
+      try {
+        let response = await this.$http.delete('http://localhost:3000/friendships', {
+          body: {
+            friendship: {'friend_id': friendId, 'user_id': userId}
+          }
+        })
+        console.log('tmaaaaaaaaaam')
+        console.log(response)
+      } catch (e) {
+        console.log('errrrrrror')
+        console.log(e)
+      }
     }
   },
   computed: {

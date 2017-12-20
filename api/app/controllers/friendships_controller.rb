@@ -12,7 +12,7 @@ class FriendshipsController < ApplicationController
     @friendship = Friendship.new(friendship_params)
 
     if @friendship.save
-      render json: @friendship, status: :created, location: @friendship
+      render json: @friendship, status: :created
     else
       render json: @friendship.errors, status: :unprocessable_entity
     end
@@ -26,7 +26,7 @@ class FriendshipsController < ApplicationController
   # }
   def destroy
     if current_user[:id] == friendship_params[:user_id]
-      Friendship.find(friendship_params).destroy
+      Friendship.find_by(friendship_params).destroy
     else
       render status: 401
     end
