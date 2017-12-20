@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :friendships, only: [:index, :create, :destroy]
 
   resources :posts, only: [:index, :create, :destroy]
+  get 'profile' => 'posts#profile'   # Get current user posts 'profile page'
 
   mount_devise_token_auth_for 'User', at: 'auth'
 end
