@@ -37,12 +37,12 @@ export default {
       let friend = this.friends[this.toBeDeletedIndex]
       // Delete request to the api to delete this friendship
       let friendId = friend.id
-      let userId = this.$auth.user().id || '6'
+      let userId = this.$auth.user().id || 6
       try {
         let response = await this.$http.delete('http://localhost:3000/friendships', {
-          friendship: {
-            'friend_id': friendId,
-            'user_id': userId}
+          body: {
+            friendship: {'friend_id': friendId, 'user_id': userId}
+          }
         })
         console.log('tmaaaaaaaaaam')
         console.log(response)
