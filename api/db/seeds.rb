@@ -24,7 +24,7 @@ def create_users(users_count)
     @email = Emails[i]
     @birthdate = Faker::Date.backward(3560)
     @password = '12345678'
-    @gender = 'Male'
+    @gender = 'male'
 
     User.create(first_name: @first_name,
                 last_name: @last_name,

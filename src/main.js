@@ -24,6 +24,8 @@ Vue.use(VueAuth, {
   refreshData: { url: `${endPoint}/auth/validate_token`, method: 'GET', enabled: true }
 })
 
+Vue.use(require('vue-moment'))
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

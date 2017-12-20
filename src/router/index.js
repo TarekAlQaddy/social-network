@@ -1,9 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home'
-import Main from '@/components/Main'
-import Login from '@/components/Login'
-import FriendsView from '@/components/friends/FriendsView'
 
 Vue.use(Router)
 
@@ -12,24 +8,34 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: require('@/components/Login').default
     },
     {
       path: '/',
       name: 'main',
-      component: Main,
+      component: require('@/components/Main').default,
       redirect: '/home',
       meta: { auth: true },
       children: [
         {
           path: 'home',
           name: 'home',
-          component: Home
+          component: require('@/components/Home').default
         },
         {
           path: 'friends',
           name: 'view_friends',
-          component: FriendsView
+          component: require('@/components/friends/FriendsView').default
+        },
+        {
+          path: 'profile/edit',
+          name: 'profile_edit',
+          component: require('@/components/profile/Edit').default
+        },
+        {
+          path: 'profile',
+          name: 'profile',
+          component: require('@/components/profile/Profile').default
         }
       ]
     }

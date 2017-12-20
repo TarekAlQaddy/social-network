@@ -39,15 +39,12 @@ export default {
       let friendId = friend.id
       let userId = this.$auth.user().id || 6
       try {
-        let response = await this.$http.delete('http://localhost:3000/friendships', {
+        await this.$http.delete('friendships', {
           body: {
             friendship: {'friend_id': friendId, 'user_id': userId}
           }
         })
-        console.log('tmaaaaaaaaaam')
-        console.log(response)
       } catch (e) {
-        console.log('errrrrrror')
         console.log(e)
       }
     }
@@ -57,10 +54,9 @@ export default {
       return this.friends[this.toBeDeletedIndex] || {}
     }
   },
-  beforeCreate: function () {
-    console.log(this.$http)
+  beforeCreate: async function () {
     try {
-      let response = this.$http.get('friendships')
+      let response = await this.$http.get('friendships')
       this.friends = response.body
     } catch (e) {
       // TODO: Handle this

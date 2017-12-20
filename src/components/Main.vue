@@ -9,7 +9,7 @@
           Home
         </a>
       </router-link>
-      <router-link :to="{ name: 'home' }">
+      <router-link :to="{ name: 'profile' }">
         <a class="item">
           <i class="user icon"></i>
           Profile
