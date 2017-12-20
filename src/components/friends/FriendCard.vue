@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     nickname: function () {
-      return this.user.nickname || `${this.user.firstName} ${this.user.lastName}`
+      return this.user.nickname || `${this.user.first_name} ${this.user.last_name}`
     }
   }
 }
