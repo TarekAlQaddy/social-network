@@ -8,5 +8,8 @@ Rails.application.routes.draw do
   post 'friendships' => 'friendships#create'
   delete 'friendships' => 'friendships#destroy'
 
+  resources :posts, only: [:index, :create, :destroy]
+  get 'profile' => 'posts#profile'   # Get current user posts 'profile page'
+
   mount_devise_token_auth_for 'User', at: 'auth'
 end

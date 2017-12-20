@@ -1,9 +1,15 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
 
-  # gets all public posts & friends private ones
-  def index
-    # hope this works
+  # GET /posts profile page, current user posts
+  def profile
+    @posts = current_user.posts
+    render json: posts, status: :ok
+  end
+
+  # TODO
+  # GET /posts all public posts & friends private ones
+  def index # Home
     @posts = Post.where(is_public: true).order("created_at DSEC")
     render json: posts, status: :ok
   end
