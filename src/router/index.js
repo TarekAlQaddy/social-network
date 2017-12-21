@@ -36,6 +36,11 @@ export default new Router({
           path: 'profile',
           name: 'profile',
           component: require('@/components/profile/Profile').default
+        },
+        {
+          path: 'search',
+          name: 'search',
+          component: require('@/components/Search').default
         }
       ]
     }

@@ -21,7 +21,7 @@
           Friends
         </a>
       </router-link>
-      <router-link :to="{ name: 'home' }">
+      <router-link :to="{ name: 'search' }">
         <a class="item">
           <i class="search icon"></i>
           Search
