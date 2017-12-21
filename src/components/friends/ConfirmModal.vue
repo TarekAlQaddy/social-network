@@ -1,5 +1,5 @@
 <template>
-  <div class="ui basic modal">
+  <div class="ui basic modal" id="remove-modal">
     <div class="ui icon header">
       <i class="remove user icon"></i>
       Unfriend {{ user.nickname }}

@@ -24,6 +24,11 @@
               <input id="login-password" name="login-password" v-model="loginUser.password" type="password">
             </div>
           </div>
+          <div class="ui negative message" v-if="errors.length > 0">
+            <div class="header" v-for="error in errors">
+              {{ error }}
+            </div>
+          </div>
           <div style="margin-top: 25px; text-align: right">
             <div class="ui black button" @click="currentState = viewStates.CHOOSE">Cancel</div>
             <div class="ui blue button" @click="login" :class="{ 'disabled': !validLoginForm }">Login</div>
@@ -115,7 +120,8 @@
         },
         currentState: 0,
         validLoginForm: false,
-        validSignupForm: false
+        validSignupForm: false,
+        errors: []
       }
     },
     methods: {
@@ -128,7 +134,10 @@
         this.$auth.login({
           params: loginData,
           rememberMe: true,
-          fetchUser: true
+          fetchUser: true,
+          error: function (error) {
+            this.errors = error.body.errors
+          }
         })
       },
       signup () {

@@ -31,19 +31,21 @@ export default {
   methods: {
     removeRequest: function (index) {
       this.toBeDeletedIndex = index
-      $('.ui.modal').modal('show')
+      $('#remove-modal').modal('show')
     },
     unfriend: async function () {
       let friend = this.friends[this.toBeDeletedIndex]
       // Delete request to the api to delete this friendship
       let friendId = friend.id
-      let userId = this.$auth.user().id || 6
+      let userId = this.$auth.user().id
       try {
         await this.$http.delete('friendships', {
           body: {
             friendship: {'friend_id': friendId, 'user_id': userId}
           }
         })
+        this.friends.splice(this.toBeDeletedIndex, 1)
+        $('#remove-modal').modal('hide')
       } catch (e) {
         console.log(e)
       }
