@@ -4,14 +4,14 @@ class PostsController < ApplicationController
   # GET /posts profile page, current user posts
   def profile
     @posts = current_user.posts
-    render json: posts, status: :ok
+    render json: @posts, status: :ok
   end
 
   # TODO
   # GET /posts all public posts & friends private ones
   def index # Home
-    @posts = Post.where(is_public: true).order("created_at DSEC")
-    render json: posts, status: :ok
+    @posts = Post.where(is_public: true).order("created_at DESC")
+    render json: @posts, status: :ok
   end
 
   # POST /posts
