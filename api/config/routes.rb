@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   post 'friendships' => 'friendships#create'
   delete 'friendships' => 'friendships#destroy'
 
+  # Update profile picture route
+  post '/user/image' => 'user#update_profile_image'
+
   resources :posts, only: [:index, :create, :destroy]
   get 'profile' => 'posts#profile'   # Get current user posts 'profile page'
 
