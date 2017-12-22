@@ -9,7 +9,8 @@
         <div class="ui four cards">
           <div class="card" v-for="request in recievedFriendRequests">
             <div class="content">
-              <img class="right floated mini ui image" :src="getImageFromUser(request.requester)">
+              <img class="right floated mini ui image" v-if="request.requester"
+                   :src="getImageFromUser(request.requester)">
               <div class="header">
                 {{ getNicknameFromUser(request.requester) }}
               </div>
@@ -31,9 +32,9 @@
         <div class="ui four cards">
           <div class="card" v-for="request in sentFriendRequests">
             <div class="content">
-              <img class="right floated mini ui image" :src="getImageFromUser(request.requester)">
+              <img class="right floated mini ui image" :src="getImageFromUser(request.asked)">
               <div class="header">
-                {{ getNicknameFromUser(request.requester) }}
+                {{ getNicknameFromUser(request.asked) }}
               </div>
               <div class="meta">
                 {{ request.created_at | moment('LLL') }}

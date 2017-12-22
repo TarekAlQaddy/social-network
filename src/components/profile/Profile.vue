@@ -5,7 +5,7 @@
         <div class="upper-half">
           <div class="image-container">
             <img :src="getImageSrc()">
-            <h1>{{ userName }}</h1>
+            <h1>{{ getNicknameFromUser(user) }}</h1>
           </div>
         </div>
       </div>
@@ -32,7 +32,7 @@
               </tr>
               <tr>
                 <td class="bold">Nickname</td>
-                <td>{{ user.nickname }}</td>
+                <td>{{ getNicknameFromUser(user) }}</td>
               </tr>
               <tr>
                 <td class="bold">Email</td>
@@ -69,22 +69,7 @@
       </div>
       <div class="one wide column"></div>
       <div class="nine wide column">
-        <div class="ui fluid card" v-for="post in posts">
-          <div class="content">
-            <div class="header">{{ userName }}</div>
-            <div class="meta">{{ post.created_at | moment('LLL') }}</div>
-            <div class="description">
-              <div class="image" v-if="post.photo_file_name">
-                <img style="max-height: 300px" :src="post.photo_file_name">
-              </div>
-              {{ post.caption }}
-            </div>
-          </div>
-          <div class="ui bottom attached red button" @click="showRemoveModal(post.id)">
-            <i class="remove icon"></i>
-            Remove Post
-          </div>
-        </div>
+        <Posts v-for="post in posts" :key="post.id" :post="post" :user="$auth.user()" :canRemove="true" @showRemoveModal="showRemoveModal" />
       </div>
     </div>
     <div class="ui basic modal" id="remove-post-modal">
@@ -111,6 +96,9 @@
 
 <script>
   export default {
+    components: {
+      Posts: require('@/components/profile/Post').default
+    },
     data () {
       return {
         posts: [],
@@ -120,9 +108,6 @@
     computed: {
       user () {
         return this.$auth.user()
-      },
-      userName () {
-        return this.user.nickname ? this.user.nickname : `${this.user.first_name} ${this.user.last_name}`
       }
     },
     methods: {
@@ -133,6 +118,13 @@
           console.log(error)
           alert('Something wrong happened !')
         })
+      },
+      getImageSrc () {
+        if (this.user.profile_picture_file_name) {
+          return this.user.profile_picture_file_name
+        } else if (this.user.gender === 'male') {
+          return '/static/male.jpg'
+        } else return '/static/female.jpg'
       },
       removePost (id) {
         this.$http.delete(`posts/${id}`).then(() => {
@@ -148,17 +140,7 @@
       showRemoveModal (id) {
         this.toBeRemovedId = id
         $('#remove-post-modal').modal('show')
-      },
-      getImageSrc () {
-        if (this.user.profile_picture_file_name) {
-          return this.user.profile_picture_file_name
-        } else if (this.user.gender === 'male') {
-          return '/static/male.jpg'
-        } else return '/static/female.jpg'
       }
-    },
-    mounted () {
-      $('#remove-post-modal').modal()
     },
     created () {
       this.getPosts()
@@ -183,6 +165,7 @@
     left: 50%;
     bottom: 0;
     transform: translate(-50%, 50%);
+    text-align: center;
   }
   #profile-picture-container .image-container h1 {
     margin-top: 0;

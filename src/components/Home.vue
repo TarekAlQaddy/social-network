@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-top: 30px;" class="ui centered grid">
+  <div style="padding-top: 60px;" class="ui centered grid">
     <div style="margin-left: 18rem" class="ui top fixed huge inverted menu">
       <div id="popup-activate" class="item">
         <i class="users icon"></i>
@@ -63,27 +63,16 @@
           </div>
         </div>
       </div>
-      <div class="ui fluid card" v-for="post in posts">
-        <div class="content">
-          <i class="right floated icon" :class="getPostIcon(post)"></i>
-          <img class="right floated mini ui image" :src="getImageFromUser(post.user)">
-          <div class="header">{{ getNicknameFromUser(post.user) }}</div>
-          <div class="meta">{{ post.created_at | moment('LLL') }}</div>
-          <div class="description">
-            <div class="image" v-if="post.photo_file_name">
-              <img style="max-height: 300px" :src="post.photo_file_name">
-            </div>
-            {{ post.caption }}
-          </div>
-        </div>
-      </div>
+      <Post v-for="post in posts" :key="post.id" :post="post" :user="post.user" :canRemove="false"/>
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'home',
+    components: {
+      Post: require('@/components/profile/Post').default
+    },
     data () {
       return {
         post: {
@@ -120,13 +109,6 @@
       },
       getImage () {
         document.getElementById('file-input').click()
-      },
-      getPostIcon (post) {
-        if (post.is_public) {
-          return 'world'
-        } else if (!post.is_public) {
-          return 'users'
-        }
       },
       fetchPosts () {
         this.$http.get('posts').then(response => {

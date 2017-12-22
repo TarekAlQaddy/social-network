@@ -11,6 +11,13 @@ export default {
     },
     getNicknameFromUser (user) {
       return user.nickname || `${user.first_name} ${user.last_name}`
+    },
+    getPostIcon (post) {
+      if (post.is_public) {
+        return 'world'
+      } else if (!post.is_public) {
+        return 'users'
+      }
     }
   }
 }

@@ -15,8 +15,8 @@ class FriendRequestsController < ApplicationController
   # GET /friend_requests/sent
   # Returns a list of sent friend requests
   def sent_index
-    @friend_requests = current_user.sent_friend_requests.includes(:asked)
-    render json: @friend_requests
+    @friend_requests = current_user.sent_friend_requests
+    render json: @friend_requests, :include => :asked
   end
 
   # GET /friend_requests/1

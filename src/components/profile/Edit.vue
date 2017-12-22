@@ -121,8 +121,15 @@
         })
       },
       sendProfilePicture () {
-        this.$http.post('').then(response => {
+        let postData = {
+          image: {
+            data: this.file64,
+            file_name: this.file.name
+          }
+        }
+        this.$http.post('user/image', postData).then(response => {
           this.loadingFile = false
+          console.log(response)
           // TODO: set image in user
         })
       }
