@@ -15,6 +15,12 @@
           Profile
         </a>
       </router-link>
+      <router-link :to="{ name: 'friend_requests' }">
+        <a class="item">
+          <i class="users icon"></i>
+          Friend Requests
+        </a>
+      </router-link>
       <router-link :to="{ name: 'view_friends' }">
         <a class="item">
           <i class="users icon"></i>
@@ -38,7 +44,7 @@
       <!--</div>-->
     <!--</div>-->
     <div style="margin-left: 18rem">
-      <div class="ui container">
+      <div class="ui container" id="container">
         <router-view/>
       </div>
     </div>
@@ -49,6 +55,8 @@
   export default {
     data () {
       return {}
+    },
+    mounted () {
     }
   }
 </script>

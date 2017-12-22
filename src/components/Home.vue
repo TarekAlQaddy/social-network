@@ -1,11 +1,43 @@
 <template>
   <div style="padding-top: 30px;" class="ui centered grid">
+    <div style="margin-left: 18rem" class="ui top fixed huge inverted menu">
+      <div id="popup-activate" class="item">
+        <i class="users icon"></i>
+        Friends Requests
+      </div>
+    </div>
+
+
+    <div id="friend-requests-popup" style="height: 150px; overflow-y: scroll" class="ui grid popup top left transition hidden">
+      <div class="ui one cards">
+        <div class="card" v-for="request in friendRequests">
+          <div class="content">
+            <img class="right floated mini ui image" src="">
+            <div class="header">
+              Name
+            </div>
+            <div class="meta">
+              Date
+            </div>
+          </div>
+          <div class="extra content">
+            <div class="ui buttons">
+              <div class="ui inverted green button" @click="friendRequestAction(request, 'accept')">Approve</div>
+              <div style="margin-left: 10px" class="ui inverted red button"
+                   @click="friendRequestAction(request, 'reject')">Decline</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <div class="twelve wide column">
       <div id="new-post" class="ui segment">
         <div class="ui loader" :class="{ 'active': posting }"></div>
         <div>
           <h2 style="float: left">New Post</h2>
-          <div style="float: right" id="is-public" class="ui floating dropdown teal labeled icon button">
+          <div style="float: right" id="is-public-dropdown" class="ui floating dropdown teal labeled icon button">
             <i class="icon" :class="getPostIcon(post)"></i>
             <span class="text">{{ post.is_public ? 'Public' : 'Private' }}</span>
             <div class="menu">
@@ -63,24 +95,26 @@
           caption: 'Hello thereee !!'
         }],
         file: null,
+        file64: null,
         loadingFile: false,
         fileReader: null,
-        posting: false
+        posting: false,
+        friendRequests: null
       }
     },
     methods: {
       fileChange (event) {
         this.file = event.target.files[0]
         if (this.file) {
-          this.fileReader.readAsDataURL(this.file)
           this.loadingFile = true
+          this.fileReader.readAsDataURL(this.file)
         }
       },
       initFileReader () {
         this.fileReader = new FileReader()
         this.fileReader.addEventListener('load', () => {
+          this.file64 = this.fileReader.result
           this.loadingFile = false
-          // console.log(this.fileReader.result)
         })
       },
       getImage () {
@@ -90,12 +124,17 @@
         if (post.is_public) {
           return 'world'
         } else if (!post.is_public) {
-          return 'friends'
+          return 'users'
         }
       },
       fetchPosts () {
         this.$http.get('posts').then(response => {
           this.posts = response.data
+        })
+      },
+      fetchFriendRequests () {
+        this.$http.get('friend_requests').then(response => {
+          this.friendRequests = response.data
         })
       },
       sendPost () {
@@ -108,6 +147,13 @@
         }
         this.$http.post('posts', postData).then(() => {
           this.fetchPosts()
+        }).catch(error => {
+          console.log(error)
+        })
+      },
+      friendRequestAction (request, action) {
+        this.$http.post(`friend_requests/${action}/${request.id}`).then(response => {
+          this.fetchFriendRequests()
         }).catch(error => {
           console.log(error)
         })
@@ -124,10 +170,11 @@
     created () {
       this.initFileReader()
       this.fetchPosts()
+      this.fetchFriendRequests()
     },
     mounted () {
       let self = this
-      $('#is-public').dropdown({
+      $('#is-public-dropdown').dropdown({
         onChange (value) {
           if (value === 'public') {
             self.post.is_public = true
@@ -135,6 +182,14 @@
             self.post.is_public = false
           }
         }
+      })
+      $('#popup-activate').popup({
+        popup: $('#friend-requests-popup'),
+        // position: 'top left',
+        // context: $('#container'),
+        // boundary: $('#container'),
+        // movePopup: false,
+        hoverable: true
       })
     }
   }
