@@ -1,6 +1,6 @@
 class UserController < ApplicationController
 
-  before_action :authenticate_user!, only: [:fetch_current_user, :update_profile_image, :show]
+  before_action :authenticate_user!, only: [:fetch_current_user, :update_profile_image, :show, :update]
   before_action :get_user, only: [:show]
 
   def show
@@ -8,6 +8,11 @@ class UserController < ApplicationController
        :email, :marital_status, :gender]
     selected << [:birthdate, :about_me] if current_user.friends.include?(@user)
     render json: @user.slice(selected), status: :ok
+  end
+
+  # PUT /user
+  def update
+    current_user.update(user_params)
   end
 
   def update_profile_image
@@ -37,5 +42,10 @@ class UserController < ApplicationController
     else
       render status: :unauthroized
     end
+  end
+
+  def user_params
+    params.require(:user).permit(:nickname,:first_name, :last_name, :hometown,
+    :email, :marital_status, :gender, :birthdate, :about_me)
   end
 end
