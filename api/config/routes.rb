@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  post 'search' => 'search#search'
+  resources :friend_requests, except: [:update]
   get 'friend_requests/sent' => 'friend_requests#sent_index'
   resources :friend_requests, except: [:update]
   post 'friend_requests/accept/:id' => 'friend_requests#confirm'
@@ -12,6 +14,9 @@ Rails.application.routes.draw do
   get 'friendships' => 'friendships#index'
   post 'friendships' => 'friendships#create'
   delete 'friendships' => 'friendships#destroy'
+
+  # Update profile picture route
+  post '/user/image' => 'user#update_profile_image'
 
   resources :posts, only: [:index, :create, :destroy]
   get 'profile' => 'posts#profile'   # Get current user posts 'profile page'
