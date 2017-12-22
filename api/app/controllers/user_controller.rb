@@ -13,11 +13,13 @@ class UserController < ApplicationController
   end
 
   def update_profile_image
-    # encoded_image = image_params[:data]
-    # content_type = image_params[:content_type]
-    # image = Paperclip.io_adapters.for("data:#{content_type};base64,#{encoded_image}")
-    # image.original_filename = image_params[:filename]
-    current_user.update_attribute :profile_picture, decode_image
+    encoded_image = image_params[:data]
+    content_type = image_params[:content_type]
+    profile_picture = Paperclip.io_adapters.for(encoded_image)
+    profile_picture.original_filename = image_params[:filename]
+    current_user.profile_picture = profile_picture
+
+    # current_user.update_attribute :profile_picture, decode_image
     current_user.save
     render json: current_user.profile_picture, statue: :ok
   end
