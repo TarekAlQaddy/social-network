@@ -63,21 +63,31 @@
           this.fetchFriendRequests()
         }).catch(error => {
           alert('Something wrong happened!')
+          console.log(error)
         })
       },
       cancelRequest (request) {
         this.$http.delete(`friend_requests/${request.id}`).then(() => {
           this.fetchSentRequests()
+        }).catch(error => {
+          alert('Something wrong happened!')
+          console.log(error)
         })
       },
       fetchRecievedRequests () {
         this.$http.get('friend_requests').then(response => {
           this.recievedFriendRequests = response.data
+        }).catch(error => {
+          alert('Something wrong happened!')
+          console.log(error)
         })
       },
       fetchSentRequests () {
         this.$http.get('friend_requests/sent').then(response => {
           this.sentFriendRequests = response.data
+        }).catch(error => {
+          alert('Something wrong happened!')
+          console.log(error)
         })
       }
     },
