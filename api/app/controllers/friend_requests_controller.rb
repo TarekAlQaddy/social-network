@@ -6,7 +6,8 @@ class FriendRequestsController < ApplicationController
   # GET /friend_requests
   # Returns pending friend requests of the current logged in user
   def index
-    @friend_requests = current_user.recieved_friend_requests.where(:status => :pending)
+    @friend_requests = current_user.recieved_friend_requests
+      .where(:status => :pending).includes(:requester)
 
     render json: @friend_requests
   end
@@ -14,7 +15,7 @@ class FriendRequestsController < ApplicationController
   # GET /friend_requests/sent
   # Returns a list of sent friend requests
   def sent_index
-    @friend_requests = current_user.sent_friend_requests
+    @friend_requests = current_user.sent_friend_requests.includes(:asked)
     render json: @friend_requests
   end
 
