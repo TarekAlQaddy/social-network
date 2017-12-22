@@ -9,12 +9,12 @@
         <div class="ui four cards">
           <div class="card" v-for="request in recievedFriendRequests">
             <div class="content">
-              <img class="right floated mini ui image" src="">
+              <img class="right floated mini ui image" :src="getImageFromUser(request.requester)">
               <div class="header">
-                Name
+                {{ getNicknameFromUser(request.requester) }}
               </div>
               <div class="meta">
-                Date
+                {{ request.created_at | moment('LLL') }}
               </div>
             </div>
             <div class="extra content">
@@ -31,12 +31,12 @@
         <div class="ui four cards">
           <div class="card" v-for="request in sentFriendRequests">
             <div class="content">
-              <img class="right floated mini ui image" src="">
+              <img class="right floated mini ui image" :src="getImageFromUser(request.requester)">
               <div class="header">
-                Name
+                {{ getNicknameFromUser(request.requester) }}
               </div>
               <div class="meta">
-                Date
+                {{ request.created_at | moment('LLL') }}
               </div>
             </div>
             <div class="extra content">
@@ -60,7 +60,7 @@
     methods: {
       friendRequestAction (request, action) {
         this.$http.post(`friend_requests/${action}/${request.id}`).then(() => {
-          this.fetchFriendRequests()
+          this.fetchRecievedRequests()
         }).catch(error => {
           alert('Something wrong happened!')
           console.log(error)

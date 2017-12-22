@@ -12,12 +12,12 @@
       <div class="ui one cards">
         <div class="card" v-for="request in friendRequests">
           <div class="content">
-            <img class="right floated mini ui image" src="">
+            <img class="right floated mini ui image" :src="getImageFromUser(request.requester)">
             <div class="header">
-              Name
+              {{ getNicknameFromUser(request.requester) }}
             </div>
             <div class="meta">
-              Date
+              {{ request.created_at | moment('LLL') }}
             </div>
           </div>
           <div class="extra content">
@@ -66,7 +66,8 @@
       <div class="ui fluid card" v-for="post in posts">
         <div class="content">
           <i class="right floated icon" :class="getPostIcon(post)"></i>
-          <div class="header">{{ post.id }}</div>
+          <img class="right floated mini ui image" :src="getImageFromUser(post.user)">
+          <div class="header">{{ getNicknameFromUser(post.user) }}</div>
           <div class="meta">{{ post.created_at | moment('LLL') }}</div>
           <div class="description">
             <div class="image" v-if="post.photo_file_name">
@@ -152,8 +153,9 @@
         })
       },
       friendRequestAction (request, action) {
+        let self = this
         this.$http.post(`friend_requests/${action}/${request.id}`).then(response => {
-          this.fetchFriendRequests()
+          self.fetchFriendRequests()
         }).catch(error => {
           console.log(error)
         })
