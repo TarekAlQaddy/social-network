@@ -11,7 +11,7 @@ class PostsController < ApplicationController
   # GET /posts all public posts & friends private ones
   def index # Home
     @posts = Post.where(is_public: true).order("created_at DESC")
-    render json: @posts, status: :ok
+    render json: @posts, :include => :user, status: :ok
   end
 
   # POST /posts

@@ -63,8 +63,6 @@ def create_friendships
   Friendship.create(user_id: 1, friend_id: 6)
   Friendship.create(user_id: 1, friend_id: 7)
   Friendship.create(user_id: 1, friend_id: 8)
-  Friendship.create(user_id: 1, friend_id: 9)
-  Friendship.create(user_id: 1, friend_id: 10)
   Friendship.create(user_id: 2, friend_id: 5)
   Friendship.create(user_id: 3, friend_id: 5)
   Friendship.create(user_id: 4, friend_id: 5)
@@ -75,6 +73,18 @@ def create_friendships
   Friendship.create(user_id: 9, friend_id: 10)
 end
 
+def create_friend_request
+  FriendRequest.create(requester_user_id: 1, asked_user_id: 9);
+  FriendRequest.create(requester_user_id: 10, asked_user_id: 1);
+  FriendRequest.create(requester_user_id: 2, asked_user_id: 10);
+  FriendRequest.create(requester_user_id: 3, asked_user_id: 10);
+  FriendRequest.create(requester_user_id: 4, asked_user_id: 10);
+  FriendRequest.create(requester_user_id: 6, asked_user_id: 10);
+  FriendRequest.create(requester_user_id: 7, asked_user_id: 10);
+  FriendRequest.create(requester_user_id: 8, asked_user_id: 10);
+end
+
 create_users(Users_count)
 create_posts(Users_count, Private_posts, Public_posts)
 create_friendships
+create_friend_request
