@@ -6,7 +6,7 @@
           <div class="container">
             <div class="ui inverted button">Profile</div>
             <div class="ui horizontal inverted divider"></div>
-            <button v-on:click='unfriendClicked' class="ui red ok inverted button">Unfriend</button>
+            <button v-if="showUnfriend" v-on:click='unfriendClicked' class="ui red ok inverted button">Unfriend</button>
           </div>
         </div>
       </div>
@@ -26,10 +26,9 @@
 
 <script>
 export default {
-  props: ['user'],
+  props: ['user', 'showUnfriend'],
   data () {
     return {
-
     }
   },
   methods: {

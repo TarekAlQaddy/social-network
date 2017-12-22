@@ -64,7 +64,7 @@
               </tr>
             </tbody>
           </table>
-          <div class="ui button fluid inverted blue" @click="$router.push({ 'name': 'profile_edit' })">Edit</div>
+          <div class="ui button fluid blue" @click="$router.push({ name: 'profile_edit' })">Edit</div>
         </div>
       </div>
       <div class="one wide column"></div>
@@ -80,7 +80,7 @@
               {{ post.caption }}
             </div>
           </div>
-          <div class="ui bottom attached button">
+          <div class="ui bottom attached red button" @click="showRemoveModal(post.id)">
             <i class="remove icon"></i>
             Remove Post
           </div>
@@ -100,7 +100,7 @@
           <i class="remove icon"></i>
           No
         </div>
-        <div class="ui green ok inverted button" @click="removePost(post.id)">
+        <div class="ui green ok inverted button" @click="removePost(toBeRemovedId)">
           <i class="checkmark icon"></i>
           Yes
         </div>
@@ -113,7 +113,8 @@
   export default {
     data () {
       return {
-        posts: []
+        posts: [],
+        toBeRemovedId: null
       }
     },
     computed: {
@@ -143,6 +144,10 @@
           alert('Something wrong happened !')
           $('#remove-post-modal').modal('hide')
         })
+      },
+      showRemoveModal (id) {
+        this.toBeRemovedId = id
+        $('#remove-post-modal').modal('show')
       }
     },
     mounted () {

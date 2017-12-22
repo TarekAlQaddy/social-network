@@ -27,7 +27,7 @@ class PostsController < ApplicationController
 
   # DELETE /post/1
   def destroy
-    @post = current_user.posts.find(post_params)
+    @post = current_user.posts.find(params[:id])
     @post.destroy
   end
 

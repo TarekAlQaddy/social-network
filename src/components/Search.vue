@@ -20,8 +20,15 @@
           </div>
         </div>
         <div style="text-align: right">
-          <div class="ui button green inverted" :class="{ 'disabled': search.text.length === 0 }">Search</div>
+          <div @click="getSearchResults" class="ui button green inverted" :class="{ 'disabled': search.text.length === 0 }">Search</div>
         </div>
+      </div>
+    </div>
+    <div class="ui segment">
+      <h2>Search Results</h2>
+      <div class="ui four cards">
+        <FriendCard v-for='(friend, index) in searchResults'
+                    :key='friend.id' :user='friend' :showUnfriend="false"/>
       </div>
     </div>
   </div>
@@ -29,6 +36,9 @@
 
 <script>
   export default {
+    components: {
+      FriendCard: require('@/components/friends/FriendCard').default
+    },
     data () {
       return {
         search: {
@@ -38,8 +48,17 @@
         searchResults: []
       }
     },
+    methods: {
+      getSearchResults () {
+        // TODO: send search request
+      }
+    },
     mounted () {
       $('#search-type').dropdown()
+      // TODO remove below
+      this.$http.get('friendships').then(response => {
+        this.searchResults = response.data
+      })
     }
   }
 </script>

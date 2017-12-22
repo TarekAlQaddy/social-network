@@ -6,7 +6,7 @@
     </h2>
     <div class="ui four cards special">
         <friend-card v-for='(user, index) in friends'
-          :key='user.id' :user='user' @removeRequest='removeRequest(index)'/>
+          :key='user.id' :user='user' :showUnfriend="true" @removeRequest='removeRequest(index)'/>
     </div>
     <confirm-modal @confirmDelete='unfriend' :user="toBeDeleted"/>
   </div>
