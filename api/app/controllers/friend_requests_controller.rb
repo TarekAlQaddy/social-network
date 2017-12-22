@@ -47,7 +47,11 @@ class FriendRequestsController < ApplicationController
     else
       current_user.friends << User.find(@friend_request[:requester_user_id])
       @friend_request.status = :accepted
-      render status: 200
+      if @friend_request.save
+        render status: 200
+      else
+        render status: 500
+      end
     end
   end
 
@@ -57,7 +61,11 @@ class FriendRequestsController < ApplicationController
     else
       # change the friend request status to rejected
       @friend_request.status = :rejected
-      render status: 200
+      if @friend_request.save
+        render status: 200
+      else
+        render status: 500
+      end
     end
   end
 
