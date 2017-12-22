@@ -4,9 +4,9 @@ class UserController < ApplicationController
 
   def show
     if params.key?(:id)
-      render json: User.select(:id, :nickname, :image, :first_name,
+      render json: User.select(:id, :nickname, :profile_picture, :first_name,
         :last_name, :hometown, :birthdate, :email, :marital_status,
-        :about_me, :gender).find(params[:id]), status: :ok
+        :about_me, :gender).find(params[:id]), :include => :phones, status: :ok
     else
       render status: :unauthroized
     end
@@ -24,18 +24,39 @@ class UserController < ApplicationController
     render json: current_user.profile_picture, statue: :ok
   end
 
+  # POST
+  def add_phone
+    @phone = current_user.posts.create(phone_params)
+
+    if @phone.save
+      render json: @phone, status: :created, location: @phone
+    else
+      render json: @phone.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE/1
+  def delete_phone
+    @phone.find(phone_params)
+    @phone.destroy
+  end
+
   def fetch_current_user
-    render json: current_user, status: :ok
+    render json: current_user, :include => :phones, status: :ok
   end
 
   private
-  def image_params
-    params.require(:image).permit(:data, :content_type, :filename)
-  end
+    def image_params
+      params.require(:image).permit(:data, :content_type, :filename)
+    end
 
-  def decode_image
-    decoded_data = Base64.decode64(image_params[:data])
-    data = StringIO.new(decoded_data)
-    return data
-  end
+    def decode_image
+      decoded_data = Base64.decode64(image_params[:data])
+      data = StringIO.new(decoded_data)
+      return data
+    end
+
+    def phone_params
+      params.require(:phone).permit(:number)
+    end
 end
