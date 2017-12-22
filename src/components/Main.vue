@@ -38,7 +38,7 @@
       <!--</div>-->
     <!--</div>-->
     <div style="margin-left: 18rem">
-      <div class="ui container">
+      <div class="ui container" id="container">
         <router-view/>
       </div>
     </div>
@@ -49,6 +49,8 @@
   export default {
     data () {
       return {}
+    },
+    mounted () {
     }
   }
 </script>
