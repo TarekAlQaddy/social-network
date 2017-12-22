@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
   has_many :friendships
   has_many :friends, through: :friendships, source: :friend
 
+  # User Friend request
+  has_many :sent_friend_requests, class_name: "FriendRequest", foreign_key: "requester_user_id"
+  has_many :recieved_friend_requests, class_name: "FriendRequest", foreign_key: "asked_user_id"
+
   # User profile picture
   has_attached_file :profile_picture,
                     styles: { medium: "300x300>", thumb: "100x100>" },
