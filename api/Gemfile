@@ -32,6 +32,8 @@ gem 'devise_token_auth'
 # Add Avatar to User Model & Post Model
 gem 'paperclip', '~> 5.1'
 
+gem 'redis', '~> 3.0'
+
 group :development, :test do
   # Generate ERD
   gem 'rails-erd', require: false, group: :development
