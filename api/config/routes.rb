@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  resources :friend_requests, except: [:update]
   get 'friend_requests/sent' => 'friend_requests#sent_index'
+  resources :friend_requests, except: [:update]
   post 'friend_requests/accept/:id' => 'friend_requests#confirm'
   post 'friend_requests/reject/:id' => 'friend_requests#reject'
 
