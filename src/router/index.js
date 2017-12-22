@@ -28,6 +28,11 @@ export default new Router({
           component: require('@/components/friends/FriendsView').default
         },
         {
+          path: 'friend_requests',
+          name: 'friend_requests',
+          component: require('@/components/FriendRequests').default
+        },
+        {
           path: 'profile/edit',
           name: 'profile_edit',
           component: require('@/components/profile/Edit').default

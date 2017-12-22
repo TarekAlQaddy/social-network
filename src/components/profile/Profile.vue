@@ -4,7 +4,7 @@
       <div id="profile-picture-container">
         <div class="upper-half">
           <div class="image-container">
-            <img :src="$auth.user().profile_picture_file_name || '/static/js.svg'">
+            <img :src="getImageSrc()">
             <h1>{{ userName }}</h1>
           </div>
         </div>
@@ -148,6 +148,13 @@
       showRemoveModal (id) {
         this.toBeRemovedId = id
         $('#remove-post-modal').modal('show')
+      },
+      getImageSrc () {
+        if (this.user.profile_picture_file_name) {
+          return this.user.profile_picture_file_name
+        } else if (this.user.gender === 'male') {
+          return '/static/male.jpg'
+        } else return '/static/female.jpg'
       }
     },
     mounted () {

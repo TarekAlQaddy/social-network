@@ -9,7 +9,6 @@ import VueAuth from '@websanova/vue-auth'
 Vue.config.productionTip = false
 Vue.use(VueResource)
 let endPoint = process.env.API_END_POINT
-console.log(endPoint)
 Vue.http.options.root = endPoint
 // Vue.http.options.emulateHTTP = true
 Vue.router = router
