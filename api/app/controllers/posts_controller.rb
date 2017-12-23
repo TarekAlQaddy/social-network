@@ -44,6 +44,7 @@ class PostsController < ApplicationController
   def destroy
     @post = current_user.posts.find(params[:id])
     @post.destroy
+    render status: :ok
   end
 
   private
