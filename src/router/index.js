@@ -38,8 +38,13 @@ export default new Router({
           component: require('@/components/profile/Edit').default
         },
         {
+          path: 'profile/:id',
+          name: 'user_profile',
+          component: require('@/components/profile/Profile').default
+        },
+        {
           path: 'profile',
-          name: 'profile',
+          name: 'my_profile',
           component: require('@/components/profile/Profile').default
         },
         {

@@ -24,6 +24,7 @@ Vue.use(VueAuth, {
 })
 
 Vue.use(require('vue-moment'))
+Vue.mixin(require('./mixin').default)
 
 /* eslint-disable no-new */
 new Vue({

@@ -15,7 +15,7 @@
               </div>
             </div>
           </div>
-          <img class="ui medium circular image" :src="getImageSrc()">
+          <img class="ui medium circular image" :src="getImageFromUser($auth.user())">
         </div>
         <div class="two fields">
           <div class="field">
@@ -103,13 +103,6 @@
       editUser () {
         // TODO send proper edit request
       },
-      getImageSrc () {
-        if (this.user.profile_picture_file_name) {
-          return this.user.profile_picture_file_name
-        } else if (this.user.gender === 'male') {
-          return '/static/male.jpg'
-        } else return '/static/female.jpg'
-      },
       clickFile () {
         $('#profile-picture-input').click()
       },
@@ -128,8 +121,15 @@
         })
       },
       sendProfilePicture () {
-        this.$http.post('').then(response => {
+        let postData = {
+          image: {
+            data: this.file64,
+            file_name: this.file.name
+          }
+        }
+        this.$http.post('user/image', postData).then(response => {
           this.loadingFile = false
+          console.log(response)
           // TODO: set image in user
         })
       }

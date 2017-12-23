@@ -1,13 +1,16 @@
 class UserController < ApplicationController
 
   before_action :authenticate_user!, only: [:fetch_current_user, :update_profile_image, :show, :update]
+
   before_action :get_user, only: [:show]
 
   def show
     selected = [:id, :nickname, :profile_picture, :first_name, :last_name, :hometown,
        :email, :marital_status, :gender]
     selected << [:birthdate, :about_me] if current_user.friends.include?(@user)
-    render json: @user.slice(selected), status: :ok
+    # @user.profile_picture = @user.profile_picture.url(:medium)
+    render json: @user.slice(selected).merge(profile_picture: @user.profile_picture.url(:medium)),
+       include: :phones, status: :ok
   end
 
   # PUT /user
@@ -27,25 +30,47 @@ class UserController < ApplicationController
     render json: current_user.profile_picture, statue: :ok
   end
 
-  def fetch_current_user
-    render json: current_user, status: :ok
-  end
+  # POST
+  def add_phone
+    @phone = current_user.posts.create(phone_params)
 
-  private
-  def image_params
-    params.require(:image).permit(:data, :content_type, :filename)
-  end
-
-  def get_user
-    if params.key?(:id)
-      @user = User.find(params[:id])
+    if @phone.save
+      render json: @phone, status: :created, location: @phone
     else
-      render status: :unauthroized
+      render json: @phone.errors, status: :unprocessable_entity
     end
   end
 
-  def user_params
-    params.require(:user).permit(:nickname,:first_name, :last_name, :hometown,
-    :email, :marital_status, :gender, :birthdate, :about_me)
+  # DELETE/1
+  def delete_phone
+    @phone.find(phone_params)
+    @phone.destroy
   end
+
+  def fetch_current_user
+    render json: current_user, :include => :phones, status: :ok
+  end
+
+  private
+    def image_params
+      params.require(:image).permit(:data, :content_type, :filename)
+    end
+
+    def phone_params
+      params.require(:phone).permit(:number)
+    end
+
+    def user_params
+      params.require(:user).permit(:nickname,:first_name, :last_name, :hometown,
+      :email, :marital_status, :gender, :birthdate, :about_me)
+    end
+
+    def get_user
+      if params.key?(:id)
+        @user = User.find(params[:id])
+      else
+        render status: :unauthroized
+      end
+    end
+
 end
