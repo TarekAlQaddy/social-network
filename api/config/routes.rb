@@ -9,8 +9,8 @@ Rails.application.routes.draw do
   # TODO: make this optional
   get 'user/:id' => 'user#show'
   get 'user' => 'user#fetch_current_user'
-  post 'add_phone' => 'user#add_phone'
-  delete 'delete_phone' => 'user#delete_phone'
+  post 'user/phone' => 'user#add_phone'
+  delete 'user/phone/:id' => 'user#delete_phone'
 
   # resources :friendships, only: [:index, :create]
   get 'friendships' => 'friendships#index'
