@@ -8,7 +8,9 @@
     </div>
 
 
-    <div id="friend-requests-popup" style="height: 150px; overflow-y: scroll" class="ui grid popup top left transition hidden">
+    <div id="friend-requests-popup"
+         style="height: 150px; overflow-y: scroll"
+         class="ui grid popup top left transition hidden">
       <div class="ui one cards">
         <div class="card" v-for="request in friendRequests">
           <div class="content">
@@ -79,11 +81,7 @@
           text: '',
           is_public: true
         },
-        posts: [{
-          id: 5,
-          created_at: new Date(),
-          caption: 'Hello thereee !!'
-        }],
+        posts: [],
         file: null,
         file64: null,
         loadingFile: false,
@@ -125,7 +123,11 @@
           post: {
             caption: this.post.text,
             is_public: this.post.is_public,
-            file: this.file
+            file: this.file,
+            photo: {
+              data: this.file64,
+              file_name: this.file.name
+            }
           }
         }
         this.$http.post('posts', postData).then(() => {
@@ -173,6 +175,13 @@
         // context: $('#container'),
         // boundary: $('#container'),
         // movePopup: false,
+        // onShow: function () {
+        //   if (self.friendRequests.length === 0) {
+        //     return false
+        //   } else {
+        //     return true
+        //   }
+        // },
         hoverable: true
       })
     }

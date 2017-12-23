@@ -154,6 +154,9 @@
           }
         }
         this.$http.post(`user/phone`, putParam).then((response) => {
+          if (!this.user.phones) {
+            this.user.phones = []
+          }
           this.user.phones.push(response.data)
           this.$auth.user(this.user)
           this.newPhone = null

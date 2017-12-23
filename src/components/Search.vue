@@ -33,8 +33,9 @@
       <div class="ui four cards">
         <FriendCard v-if="lastSearchType !== 'caption'" v-for='(friend, index) in searchResults'
                     :user='friend' :key="friend.id" :showUnfriend="false"/>
-
-        <Post v-for="post in searchResults" :post="post" :user="post.user" :key="post.id" :canRemove="false" />
+      </div>
+      <div>
+        <Post v-for="post in searchResults" :post="post" :user="post.user" :key="String(post.id) + post.caption" :canRemove="false" />
       </div>
     </div>
   </div>

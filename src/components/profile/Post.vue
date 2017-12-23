@@ -9,8 +9,8 @@
              @click="goToProfile(user.id)">{{ getNicknameFromUser(user) }}</div>
         <div class="meta">{{ post.created_at | moment('LLL') }}</div>
         <div class="description">
-          <div class="image" v-if="post.photo_file_name">
-            <img style="max-height: 300px" :src="post.photo_file_name">
+          <div class="image" v-if="hasImage">
+            <img style="max-height: 300px" :src="post.photo_url">
           </div>
           {{ post.caption }}
         </div>
@@ -29,6 +29,11 @@
     data () {
       return {
         toBeRemovedId: null
+      }
+    },
+    computed: {
+      hasImage () {
+        return this.post.photo_url && this.post.photo_url !== '/photos/original/missing.png'
       }
     },
     methods: {

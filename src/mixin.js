@@ -6,9 +6,10 @@ export default {
   },
   methods: {
     getImageFromUser (user) {
-      if (user.profile_picture) {
+      if (user.profile_picture && user.profile_picture !== '/profile_pictures/medium/missing.png') {
         return `${this.API_END_POINT}/${user.profile_picture}`
-      } else if (user.profile_picture_file_name) {
+      } else if (user.profile_picture_file_name &&
+        user.profile_picture_file_name !== '/profile_pictures/medium/missing.png') {
         return `${this.API_END_POINT}/${user.profile_picture_file_name}`
       } else if (user.gender === 'male') {
         return '/static/male.jpg'
