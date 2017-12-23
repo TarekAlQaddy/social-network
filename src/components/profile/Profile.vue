@@ -70,7 +70,7 @@
       <div class="one wide column"></div>
       <div class="nine wide column">
         <Posts v-for="post in posts"
-               :key="post.id"
+               :key="String(post.id) + post.caption"
                :post="post"
                :user="user"
                :canRemove="isCurrentUserProfile"
@@ -90,7 +90,7 @@
           <i class="remove icon"></i>
           No
         </div>
-        <div class="ui green ok inverted button" @click="removePost(toBeRemovedId)">
+        <div class="ui green ok inverted button" @click="removePost()">
           <i class="checkmark icon"></i>
           Yes
         </div>
@@ -138,17 +138,18 @@
           alert('Something wrong happened !')
         })
       },
-      removePost (id) {
-        this.$http.delete(`posts/${id}`).then(() => {
-          this.getPosts()
+      removePost () {
+        this.$http.delete(`posts/${this.toBeRemovedId}`).then(() => {
+          this.getPosts(this.userId)
           $('#remove-post-modal').modal('hide')
         }).catch(error => {
           console.log(error)
-          alert('Something wrong happened !')
+          // alert('Something wrong happened !')
           $('#remove-post-modal').modal('hide')
         })
       },
       showRemoveModal (id) {
+        console.log(id)
         this.toBeRemovedId = id
         $('#remove-post-modal').modal('show')
       }

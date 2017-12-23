@@ -124,10 +124,7 @@
             caption: this.post.text,
             is_public: this.post.is_public,
             file: this.file,
-            photo: {
-              data: this.file64,
-              file_name: this.file.name
-            }
+            photo: this.file64
           }
         }
         this.$http.post('posts', postData).then(() => {

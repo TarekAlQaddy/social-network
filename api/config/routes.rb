@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   # TODO: make this optional
   get 'user/:id' => 'user#show'
   get 'user' => 'user#fetch_current_user'
+  put 'user' => 'user#update'
   post 'user/phone' => 'user#add_phone'
   delete 'user/phone/:id' => 'user#delete_phone'
 
