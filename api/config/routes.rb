@@ -20,8 +20,9 @@ Rails.application.routes.draw do
   # Update profile picture route
   post '/user/image' => 'user#update_profile_image'
 
+  # Posts Routes
   resources :posts, only: [:index, :create, :destroy]
-  get 'profile' => 'posts#profile'   # Get current user posts 'profile page'
+  get 'profile/:id' => 'posts#profile'   # Get user posts 'profile page'
 
   mount_devise_token_auth_for 'User', at: 'auth', controllers: {
     token_validations:  'overrides/token_validations'

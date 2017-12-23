@@ -9,8 +9,8 @@
 require 'faker'
 
 Users_count = 10
-Private_posts = 5
-Public_posts = 5
+Private_posts = 2
+Public_posts = 2
 
 Emails = ['a@a.com', 'b@b.com', 'c@c.com', 'd@d.com', 'e@e.com', 'f@f.com', 'g@g.com',
           'h@h.com', 'i@i.com', 'j@j.com', 'k@k.com', 'l@l.com', 'm@m.com', 'n@n.com',
