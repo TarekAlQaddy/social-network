@@ -1,6 +1,7 @@
 class UserController < ApplicationController
 
-  before_action :authenticate_user!, only: [:fetch_current_user, :update_profile_image, :show, :update]
+  before_action :authenticate_user!, only: [:fetch_current_user, :update_profile_image,
+    :show, :update, :add_phone, :delete_phone]
 
   before_action :get_user, only: [:show]
 
@@ -32,10 +33,10 @@ class UserController < ApplicationController
 
   # POST
   def add_phone
-    @phone = current_user.posts.create(phone_params)
+    @phone = current_user.phones.create(phone_params)
 
     if @phone.save
-      render json: @phone, status: :created, location: @phone
+      render json: @phone, status: :created
     else
       render json: @phone.errors, status: :unprocessable_entity
     end

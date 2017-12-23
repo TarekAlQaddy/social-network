@@ -17,8 +17,7 @@ class PostsController < ApplicationController
   # TODO
   # GET /posts all public posts & friends private ones
   def index # Home
-    users = current_user.friends << current_user
-    @posts = Post.where(is_public: true).or(Post.where(user: users))
+    @posts = Post.where(is_public: true).or(Post.where(user: users)).or(Post.where(user: current_user))
     @posts = @posts.order("created_at DESC")
     render json: @posts.as_json.merge(photo: @post.photo.url(:medium)), :include => :user, status: :ok
   end
