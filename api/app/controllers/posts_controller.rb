@@ -20,7 +20,7 @@ class PostsController < ApplicationController
     users = current_user.friends << current_user
     @posts = Post.where(is_public: true).or(Post.where(user: users))
     @posts = @posts.order("created_at DESC")
-    render json: @posts, :include => :user, status: :ok
+    render json: @posts.as_json.merge(photo: @post.photo.url(:medium)), :include => :user, status: :ok
   end
 
   # POST /posts
