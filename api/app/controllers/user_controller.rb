@@ -1,15 +1,13 @@
 class UserController < ApplicationController
 
-  before_action :authenticate_user!, only: [:fetch_current_user, :update_profile_image]
+  before_action :authenticate_user!, only: [:fetch_current_user, :update_profile_image, :show]
+  before_action :get_user, only: [:show]
 
   def show
-    if params.key?(:id)
-      render json: User.select(:id, :nickname, :image, :first_name,
-        :last_name, :hometown, :birthdate, :email, :marital_status,
-        :about_me, :gender).find(params[:id]), status: :ok
-    else
-      render status: :unauthroized
-    end
+    selected = [:id, :nickname, :profile_picture, :first_name, :last_name, :hometown,
+       :email, :marital_status, :gender]
+    selected << [:birthdate, :about_me] if current_user.friends.include?(@user)
+    render json: @user.slice(selected), status: :ok
   end
 
   def update_profile_image
@@ -33,9 +31,11 @@ class UserController < ApplicationController
     params.require(:image).permit(:data, :content_type, :filename)
   end
 
-  def decode_image
-    decoded_data = Base64.decode64(image_params[:data])
-    data = StringIO.new(decoded_data)
-    return data
+  def get_user
+    if params.key?(:id)
+      @user = User.find(params[:id])
+    else
+      render status: :unauthroized
+    end
   end
 end
