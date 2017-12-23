@@ -5,7 +5,7 @@ module Overrides
       # @resource will have been set by set_user_by_token concern
       if @resource
         render json: {
-          data: @resource.as_json.merge(profile_picture: @resource.profile_picture.url(:medium))
+          data: @resource.as_json.merge(profile_picture: @resource.profile_picture.url(:medium)).merge(phones: @resource.phones)
         }
       else
         render json: {
