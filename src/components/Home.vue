@@ -2,8 +2,8 @@
   <div style="padding-top: 60px;" class="ui centered grid">
     <div style="margin-left: 18rem" class="ui top fixed huge inverted menu">
       <div id="popup-activate" class="item">
-        <i class="users icon"></i>
         Friends Requests
+        <a class="ui circular blue label" v-if="friendRequests.length > 0">{{ friendRequests.length }}</a>
       </div>
     </div>
 
@@ -89,7 +89,7 @@
         loadingFile: false,
         fileReader: null,
         posting: false,
-        friendRequests: null
+        friendRequests: []
       }
     },
     methods: {

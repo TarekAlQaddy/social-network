@@ -18,6 +18,13 @@ export default {
       } else if (!post.is_public) {
         return 'users'
       }
+    },
+    goToProfile (user) {
+      if (user.id === this.$auth.user().id) {
+        this.$router.push({ name: 'my_profile' })
+      } else {
+        this.$router.push({ name: 'my_profile', params: { id: user.id } })
+      }
     }
   }
 }

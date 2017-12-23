@@ -5,7 +5,8 @@
         <i class="right floated icon" :class="getPostIcon(post)"></i>
         <img class="right floated mini ui image"
              :src="getImageFromUser(user)">
-        <div class="header">{{ getNicknameFromUser(user) }}</div>
+        <div class="header link" style="cursor: pointer"
+             @click="goToProfile(user)">{{ getNicknameFromUser(user) }}</div>
         <div class="meta">{{ post.created_at | moment('LLL') }}</div>
         <div class="description">
           <div class="image" v-if="post.photo_file_name">
@@ -34,9 +35,6 @@
       showRemoveModal (id) {
         this.$emit('showRemoveModal', id)
       }
-    },
-    mounted () {
-      $('#remove-post-modal').modal()
     }
   }
 </script>

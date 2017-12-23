@@ -4,7 +4,7 @@
       <div id="profile-picture-container">
         <div class="upper-half">
           <div class="image-container">
-            <img :src="getImageSrc()">
+            <img :src="getImageFromUser(user)">
             <h1>{{ getNicknameFromUser(user) }}</h1>
           </div>
         </div>
@@ -50,7 +50,7 @@
                 <td class="bold">Hometown</td>
                 <td>{{ user.hometown }}</td>
               </tr>
-              <tr>
+              <tr v-if="canSeeInfo">
                 <td class="bold">Birthdate</td>
                 <td>{{ user.birthdate }}</td>
               </tr>
@@ -58,7 +58,7 @@
                 <td class="bold">Marital Status</td>
                 <td>{{ user.marital_status }}</td>
               </tr>
-              <tr>
+              <tr v-if="canSeeInfo">
                 <td class="bold">About me</td>
                 <td>{{ user.about_me }}</td>
               </tr>
@@ -69,7 +69,12 @@
       </div>
       <div class="one wide column"></div>
       <div class="nine wide column">
-        <Posts v-for="post in posts" :key="post.id" :post="post" :user="$auth.user()" :canRemove="true" @showRemoveModal="showRemoveModal" />
+        <Posts v-for="post in posts"
+               :key="post.id"
+               :post="post"
+               :user="$auth.user()"
+               :canRemove="isCurrentUserProfile"
+               @showRemoveModal="showRemoveModal"/>
       </div>
     </div>
     <div class="ui basic modal" id="remove-post-modal">
@@ -102,33 +107,46 @@
     data () {
       return {
         posts: [],
-        toBeRemovedId: null
+        toBeRemovedId: null,
+        user: null
       }
     },
     computed: {
-      user () {
-        return this.$auth.user()
+      isCurrentUserProfile () {
+        return !this.$route.params.id
+      },
+      userId () {
+        if (!this.isCurrentUserProfile) {
+          return this.$route.params.id
+        }
+      },
+      canSeeInfo () {
+        // if exists means that the profile is a friend or mine
+        return this.user.birthdate
       }
     },
     methods: {
-      getPosts () {
-        this.$http.get('profile').then(response => {
+      fetchUser () {
+        this.$http.get(`user/${this.userId}`).then(response => {
+          this.user = response.data
+        })
+      },
+      getPosts (userId) {
+        let route = ''
+        if (userId) {
+          route = `profile/${userId}`
+        } else {
+          route = 'profile'
+        }
+        this.$http.get(route).then(response => {
           this.posts = response.data
         }).catch(error => {
           console.log(error)
           alert('Something wrong happened !')
         })
       },
-      getImageSrc () {
-        if (this.user.profile_picture_file_name) {
-          return this.user.profile_picture_file_name
-        } else if (this.user.gender === 'male') {
-          return '/static/male.jpg'
-        } else return '/static/female.jpg'
-      },
       removePost (id) {
         this.$http.delete(`posts/${id}`).then(() => {
-          alert('post deleted successfully')
           this.getPosts()
           $('#remove-post-modal').modal('hide')
         }).catch(error => {
@@ -143,7 +161,16 @@
       }
     },
     created () {
-      this.getPosts()
+      if (!this.isCurrentUserProfile) {
+        this.fetchUser()
+        this.getPosts(this.userId)
+      } else {
+        this.user = this.$auth.user()
+        this.getPosts()
+      }
+    },
+    mounted () {
+      $('#remove-post-modal').modal()
     }
   }
 </script>
