@@ -45,12 +45,8 @@ class UserController < ApplicationController
   # DELETE/1
   def delete_phone
     @phone = current_user.phones.find(params[:id])
-
-    if @phone.destroy
-      render status: :deleted
-    else
-      render json: @phone.errors, status: :unprocessable_entity
-    end
+    @phone.destroy
+    render status: :ok
   end
 
   def fetch_current_user
