@@ -42,7 +42,8 @@
         </div>
         <div class="field">
           <input style="width: 80%" class="thirteen wide column" type="number" v-model="newPhone">
-          <button style="float: right;" @click="addPhone()" class="ui blue button">Add</button>
+          <button style="float: right;" @click="addPhone()" class="ui blue button"
+                  :class="{ 'active': newPhone, 'disabled': newPhone.length < 6 }">Add</button>
         </div>
         <div class="inline fields">
           <label>Gender</label>
@@ -100,7 +101,7 @@
         file64: null,
         fileReader: null,
         loadingFile: false,
-        newPhone: null
+        newPhone: ''
       }
     },
     methods: {
@@ -159,7 +160,7 @@
           }
           this.user.phones.push(response.data)
           this.$auth.user(this.user)
-          this.newPhone = null
+          this.newPhone = ''
         }).catch(() => {
           alert('Something wrong happened!')
         })
