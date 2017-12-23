@@ -36,9 +36,9 @@
           <input id="user-email" name="user-email" v-model="user.email" type="email">
         </div>
         <label>Phone Number(s)</label>
-        <div v-for="phone in user.phones">
-          <div style="display: inline-block" class="ui label">{{ phone }}</div>
-          <button style="display: inline-block" @click="removePhone(phone)" class="ui tiny red button">Remove</button>
+        <div v-for="phone in user.phones" style="width: 50%; margin: 15px">
+          <div  class="ui label">{{ phone.number }}</div>
+          <button style="float: right" @click="removePhone(phone)" class="ui tiny red button">Remove</button>
         </div>
         <div class="field">
           <input style="width: 80%" class="thirteen wide column" type="number" v-model="newPhone">
@@ -69,7 +69,7 @@
         </div>
       </div>
       <div style="text-align: right; margin-top: 20px">
-        <div class="ui button icon black" style="float: left" @click="goToProfile($auth.user())">
+        <div class="ui button icon black" style="float: left" @click="goToProfile($auth.user().id)">
           <i class="arrow left icon"></i>
           Back
         </div>
@@ -153,8 +153,8 @@
             number: this.newPhone
           }
         }
-        this.$http.post('add_phone', putParam).then(() => {
-          this.user.phones.push(this.newPhone)
+        this.$http.post(`user/phone`, putParam).then((response) => {
+          this.user.phones.push(response.data)
           this.$auth.user(this.user)
           this.newPhone = null
         }).catch(() => {
@@ -162,7 +162,10 @@
         })
       },
       removePhone (phone) {
-        this.$http.delete('delete_phone', phone).then(() => {
+        // let deleteParam = {
+        //   phone: phone
+        // }
+        this.$http.delete(`user/phone/${phone.id}`).then(() => {
           let user = this.user
           let toBeRemoved = user.phones.find(userPhone => userPhone.id === phone.id)
           let toBeRemovedIndex = user.phones.indexOf(toBeRemoved)
@@ -174,7 +177,6 @@
     created () {
       // clone the user
       this.user = $.extend(true, {}, this.$auth.user())
-      this.user.phones = ['3543541351', '354354']
       this.initFileReader()
     },
     mounted () {

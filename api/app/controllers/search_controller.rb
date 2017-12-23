@@ -10,13 +10,17 @@ class SearchController < ApplicationController
     when "caption"
       results = Post.where("LOWER(caption) LIKE ?", search_value)
     when "hometown"
-      results = Post.where("LOWER(hometown) LIKE ?", search_value)
+      results = User.where("LOWER(hometown) LIKE ?", search_value)
     when "name"
       results = User.where("LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?", search_value, search_value)
     else
       results = {}
     end
-    render json: results, status: :ok
+    if search_params[:type] === 'caption'
+      render json: results, status: :ok, :include => :user
+    else
+      render json: results, status: :ok
+    end
   end
 
 

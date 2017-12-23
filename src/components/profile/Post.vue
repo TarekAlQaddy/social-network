@@ -6,7 +6,7 @@
         <img class="right floated mini ui image"
              :src="getImageFromUser(user)">
         <div class="header link" style="cursor: pointer"
-             @click="goToProfile(user)">{{ getNicknameFromUser(user) }}</div>
+             @click="goToProfile(user.id)">{{ getNicknameFromUser(user) }}</div>
         <div class="meta">{{ post.created_at | moment('LLL') }}</div>
         <div class="description">
           <div class="image" v-if="post.photo_file_name">

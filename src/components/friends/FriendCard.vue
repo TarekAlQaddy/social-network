@@ -4,16 +4,16 @@
       <div class="ui dimmer">
         <div class="content">
           <div class="container">
-            <div class="ui inverted button">Profile</div>
+            <div @click="goToProfile(user.id)" class="ui inverted button">Profile</div>
             <div class="ui horizontal inverted divider"></div>
             <button v-if="showUnfriend" v-on:click='unfriendClicked' class="ui red ok inverted button">Unfriend</button>
           </div>
         </div>
       </div>
-      <img src="../../assets/F-go7vvI.jpeg">
+      <img :src="getImageFromUser(user)">
     </div>
     <div class="content">
-      <a class="header">{{ nickname }}</a>
+      <a class="header" @click="goToProfile(user.id)">{{ nickname }}</a>
     </div>
     <div class="extra content">
       <a>

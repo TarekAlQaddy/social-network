@@ -37,13 +37,8 @@ export default {
       let friend = this.friends[this.toBeDeletedIndex]
       // Delete request to the api to delete this friendship
       let friendId = friend.id
-      let userId = this.$auth.user().id
       try {
-        await this.$http.delete('friendships', {
-          body: {
-            friendship: {'friend_id': friendId, 'user_id': userId}
-          }
-        })
+        await this.$http.delete(`friendships/${friendId}`)
         this.friends.splice(this.toBeDeletedIndex, 1)
         $('#remove-modal').modal('hide')
       } catch (e) {
