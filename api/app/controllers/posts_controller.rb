@@ -63,8 +63,10 @@ class PostsController < ApplicationController
 
     def add_image_and_user_to_post(posts)
       posts = posts.to_a
+
       posts.map! do |post|
         user = post.user
+        user[:profile_picture_file_name] = user.profile_picture.url(:medium)
         begin
           photo_url = post.photo.url
           post = post.as_json
