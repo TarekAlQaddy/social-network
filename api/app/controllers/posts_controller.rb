@@ -5,13 +5,15 @@ class PostsController < ApplicationController
   # GET /posts profile page, current user posts
   def profile
     if @user == current_user or current_user.friends.include?(@user)
-      @posts = @user.posts
+      posts = @user.posts
     else
-      @posts = @user.posts.where(is_public: true)
+      posts = @user.posts.where(is_public: true)
     end
 
-    @posts = @posts.order("created_at DESC")
-    render json: @posts, status: :ok
+    posts = posts.order("created_at DESC")
+    posts = add_image_and_user_to_post(posts)
+
+    render json: posts, status: :ok
   end
 
   # TODO
@@ -19,21 +21,8 @@ class PostsController < ApplicationController
   def index # Home
     posts = Post.where(is_public: true).or(Post.where(user: current_user.friends)).or(Post.where(user: current_user))
     posts = posts.order("created_at DESC")
-    posts = posts.to_a
 
-    posts.map! do |post|
-      begin
-        photo_url = post.photo.url
-        user = post.user
-        post = post.as_json
-        post[:user] = user
-        post[:photo_url] = photo_url
-      rescue Paperclip::AdapterRegistry::NoHandlerError
-        post = post.as_json
-        post[:photo_url] = photo_url
-      end
-      post
-    end
+    posts = add_image_and_user_to_post(posts)
 
     render json: posts, status: :ok
   end
@@ -70,4 +59,25 @@ class PostsController < ApplicationController
         render status: :unauthroized
       end
     end
+
+    def add_image_and_user_to_post(posts)
+      posts = posts.to_a
+      posts.map! do |post|
+        user = post.user
+        begin
+          photo_url = post.photo.url
+          post = post.as_json
+          post[:user] = user
+          post[:photo_url] = photo_url
+        rescue Paperclip::AdapterRegistry::NoHandlerError
+          post = post.as_json
+          post[:user] = user
+          post[:photo_url] = photo_url
+        end
+        post
+      end
+
+      return posts
+    end
+
 end
