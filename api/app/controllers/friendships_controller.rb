@@ -1,5 +1,6 @@
 class FriendshipsController < ApplicationController
   before_action :authenticate_user!
+  before_action :get_friend, only: [:destroy]
 
   # GET /friendships
   # gets all friends of a certain user
@@ -18,15 +19,10 @@ class FriendshipsController < ApplicationController
     end
   end
 
-  # DELETE /friendships/
-  # body:
-  # {
-  #   user_id,  <= must equal the id of the current loggedin user
-  #   friend_id
-  # }
+  # DELETE /friendships/:id
   def destroy
-    if current_user[:id] == friendship_params[:user_id]
-      Friendship.find_by(friendship_params).destroy
+    if current_user.friends.include?(@friend)
+      Friendship.find_by(user_id: current_user.id, friend_id: @friend.id).destroy
     else
       render status: 401
     end
@@ -37,4 +33,13 @@ class FriendshipsController < ApplicationController
     def friendship_params
       params.require(:friendship).permit(:user_id, :friend_id)
     end
+
+    def get_friend
+      if params.key?(:id)
+        @friend = User.find(params[:id])
+      else
+        render status: :unauthroized
+      end
+    end
+
 end
