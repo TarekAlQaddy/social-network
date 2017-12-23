@@ -23,5 +23,7 @@ Rails.application.routes.draw do
   resources :posts, only: [:index, :create, :destroy]
   get 'profile' => 'posts#profile'   # Get current user posts 'profile page'
 
-  mount_devise_token_auth_for 'User', at: 'auth'
+  mount_devise_token_auth_for 'User', at: 'auth', controllers: {
+    token_validations:  'overrides/token_validations'
+  }
 end

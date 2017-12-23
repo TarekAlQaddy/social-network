@@ -19,6 +19,7 @@ class PostsController < ApplicationController
   # POST /posts
   def create
     @post = current_user.posts.build(post_params)
+    @post.photo = Paperclip.io_adapters.for(post_params[:photo])
 
     if @post.save
       render json: @post, status: :created, location: @post
