@@ -1,8 +1,8 @@
 export default {
   methods: {
     getImageFromUser (user) {
-      if (user.profile_picture_file_name) {
-        return user.profile_picture_file_name
+      if (user.profile_picture) {
+        return this.$http.options.root + user.profile_picture
       } else if (user.gender === 'male') {
         return '/static/male.jpg'
       } else {
