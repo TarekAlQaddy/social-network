@@ -4,13 +4,13 @@ class PostsController < ApplicationController
 
   # GET /posts profile page, current user posts
   def profile
-    @posts = []
-    if @user == current_user
-      @posts = current_user.posts
-    else current_user.friends.include?(@user)
+    if @user == current_user or current_user.friends.include?(@user)
       @posts = @user.posts
+    else
+      @posts = @user.posts.where(is_public: true)
     end
 
+    @posts = @posts.order("created_at DESC")
     render json: @posts, status: :ok
   end
 
