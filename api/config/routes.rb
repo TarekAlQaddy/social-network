@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   # resources :friendships, only: [:index, :create]
   get 'friendships' => 'friendships#index'
   post 'friendships' => 'friendships#create'
-  delete 'friendships' => 'friendships#destroy'
+  delete 'friendships/:id' => 'friendships#destroy'
 
   # Update profile picture route
   post '/user/image' => 'user#update_profile_image'

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="main-sidebar" class="ui visible labeled icon vertical large inverted menu sidebar">
-      <div id="user-image-container" style="background-image: url('static/js.svg')">
+      <div id="user-image-container" :style="{'background-image': `url(${getImageFromUser($auth.user())})`}">
       </div>
       <router-link :to="{ name: 'home' }">
         <a class="item">
@@ -9,7 +9,7 @@
           Home
         </a>
       </router-link>
-      <router-link :to="{ name: 'my_profile' }">
+      <router-link :to="{ name: 'profile', params: { id: $auth.user().id } }">
         <a class="item">
           <i class="user icon"></i>
           Profile

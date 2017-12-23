@@ -39,12 +39,7 @@ export default new Router({
         },
         {
           path: 'profile/:id',
-          name: 'user_profile',
-          component: require('@/components/profile/Profile').default
-        },
-        {
-          path: 'profile',
-          name: 'my_profile',
+          name: 'profile',
           component: require('@/components/profile/Profile').default
         },
         {
