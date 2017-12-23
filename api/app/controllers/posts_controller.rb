@@ -26,8 +26,8 @@ class PostsController < ApplicationController
         photo_url = post.photo.url
         user = post.user
         post = post.as_json
-        post[:photo_url] = photo_url
         post[:user] = user
+        post[:photo_url] = photo_url
       rescue Paperclip::AdapterRegistry::NoHandlerError
         post = post.as_json
         post[:photo_url] = photo_url
