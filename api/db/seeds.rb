@@ -84,7 +84,18 @@ def create_friend_request
   FriendRequest.create(requester_user_id: 8, asked_user_id: 10);
 end
 
+def add_phone_to_users(users_count)
+  (1..users_count).each do |i|
+    @user = User.find(i)
+
+    3.times do
+      @user.phones.create(number: Faker::PhoneNumber.phone_number)
+    end
+  end
+end
+
 create_users(Users_count)
 create_posts(Users_count, Private_posts, Public_posts)
 create_friendships
 create_friend_request
+add_phone_to_users(Users_count)

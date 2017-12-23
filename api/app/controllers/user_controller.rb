@@ -1,5 +1,4 @@
 class UserController < ApplicationController
-
   before_action :authenticate_user!, only: [:fetch_current_user, :update_profile_image, :show]
   before_action :get_user, only: [:show]
 
@@ -22,20 +21,42 @@ class UserController < ApplicationController
     render json: current_user.profile_picture, statue: :ok
   end
 
+  # POST
+  def add_phone
+    @phone = current_user.posts.create(phone_params)
+
+    if @phone.save
+      render json: @phone, status: :created, location: @phone
+    else
+      render json: @phone.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE/1
+  def delete_phone
+    @phone.find(phone_params)
+    @phone.destroy
+  end
+
   def fetch_current_user
-    render json: current_user, status: :ok
+    render json: current_user, :include => :phones, status: :ok
   end
 
   private
-  def image_params
-    params.require(:image).permit(:data, :content_type, :filename)
-  end
-
-  def get_user
-    if params.key?(:id)
-      @user = User.find(params[:id])
-    else
-      render status: :unauthroized
+    def image_params
+      params.require(:image).permit(:data, :content_type, :filename)
     end
-  end
+
+    def phone_params
+      params.require(:phone).permit(:number)
+    end
+
+    def get_user
+      if params.key?(:id)
+        @user = User.find(params[:id])
+      else
+        render status: :unauthroized
+      end
+    end
+
 end
