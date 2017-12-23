@@ -15,7 +15,7 @@
               </div>
             </div>
           </div>
-          <img class="ui medium circular image" :src="getImageFromUser($auth.user())">
+          <img class="ui medium image" :src="getImageFromUser($auth.user())">
         </div>
         <div class="two fields">
           <div class="field">
@@ -35,11 +35,14 @@
           <label for="user-email">Email</label>
           <input id="user-email" name="user-email" v-model="user.email" type="email">
         </div>
+        <label>Phone Number(s)</label>
+        <div v-for="phone in user.phones">
+          <div style="display: inline-block" class="ui label">{{ phone }}</div>
+          <button style="display: inline-block" @click="removePhone(phone)" class="ui tiny red button">Remove</button>
+        </div>
         <div class="field">
-          <label>Phone Number(s)</label>
-          <select class="ui search select"  multiple id="user-phones" name="user-phones" v-model="phones">
-            <option v-for="phone in user.phones" :value="phone">{{ phone }}</option>
-          </select>
+          <input style="width: 80%" class="thirteen wide column" type="number" v-model="newPhone">
+          <button style="float: right;" @click="addPhone()" class="ui blue button">Add</button>
         </div>
         <div class="inline fields">
           <label>Gender</label>
@@ -66,7 +69,7 @@
         </div>
       </div>
       <div style="text-align: right; margin-top: 20px">
-        <div class="ui button icon black" style="float: left" @click="$router.push({ name: 'profile' })">
+        <div class="ui button icon black" style="float: left" @click="goToProfile($auth.user())">
           <i class="arrow left icon"></i>
           Back
         </div>
@@ -96,12 +99,21 @@
         file: null,
         file64: null,
         fileReader: null,
-        loadingFile: false
+        loadingFile: false,
+        newPhone: null
       }
     },
     methods: {
       editUser () {
-        // TODO send proper edit request
+        let putData = {
+          user: this.user
+        }
+        this.$http.put('user', putData).then(() => {
+          console.log(2)
+        }).catch(error => {
+          alert('Something wrong happened!')
+          console.log(error)
+        })
       },
       clickFile () {
         $('#profile-picture-input').click()
@@ -129,14 +141,40 @@
         }
         this.$http.post('user/image', postData).then(response => {
           this.loadingFile = false
-          console.log(response)
-          // TODO: set image in user
+          let user = this.$auth.user()
+          user.profile_picture = response.body
+          user.profile_picture_file_name = response.body
+          this.$auth.user(user)
+        })
+      },
+      addPhone () {
+        let putParam = {
+          phone: {
+            number: this.newPhone
+          }
+        }
+        this.$http.post('add_phone', putParam).then(() => {
+          this.user.phones.push(this.newPhone)
+          this.$auth.user(this.user)
+          this.newPhone = null
+        }).catch(() => {
+          alert('Something wrong happened!')
+        })
+      },
+      removePhone (phone) {
+        this.$http.delete('delete_phone', phone).then(() => {
+          let user = this.user
+          let toBeRemoved = user.phones.find(userPhone => userPhone.id === phone.id)
+          let toBeRemovedIndex = user.phones.indexOf(toBeRemoved)
+          user.phones.splice(toBeRemovedIndex, 1)
+          this.$auth.user(user)
         })
       }
     },
     created () {
       // clone the user
       this.user = $.extend(true, {}, this.$auth.user())
+      this.user.phones = ['3543541351', '354354']
       this.initFileReader()
     },
     mounted () {
@@ -164,6 +202,11 @@
     display: block;
     width: 200px;
     margin: 30px auto;
+  }
+  #edit-form .profile-picture img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
   }
   #profile-picture-dimmer {
     border-radius: 50%;

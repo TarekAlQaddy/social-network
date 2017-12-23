@@ -3,7 +3,7 @@
     <div class="ui segment">
       <div id="profile-picture-container">
         <div class="upper-half">
-          <div class="image-container">
+          <div class="image-container" v-if="user">
             <img :src="getImageFromUser(user)">
             <h1>{{ getNicknameFromUser(user) }}</h1>
           </div>
@@ -21,7 +21,7 @@
                 <th style="width: 70%"></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody v-if="user">
               <tr>
                 <td class="bold">First Name</td>
                 <td>{{ user.first_name }}</td>
@@ -72,7 +72,7 @@
         <Posts v-for="post in posts"
                :key="post.id"
                :post="post"
-               :user="$auth.user()"
+               :user="user"
                :canRemove="isCurrentUserProfile"
                @showRemoveModal="showRemoveModal"/>
       </div>
@@ -113,16 +113,14 @@
     },
     computed: {
       isCurrentUserProfile () {
-        return !this.$route.params.id
+        return Number(this.$route.params.id) === Number(this.$auth.user().id)
       },
       userId () {
-        if (!this.isCurrentUserProfile) {
-          return this.$route.params.id
-        }
+        return this.$route.params.id
       },
       canSeeInfo () {
-        // if exists means that the profile is a friend or mine
-        return this.user.birthdate
+        // if exists means that the profile is me or a friend or mine
+        return Boolean(this.user.birthdate)
       }
     },
     methods: {
@@ -132,12 +130,7 @@
         })
       },
       getPosts (userId) {
-        let route = ''
-        if (userId) {
-          route = `profile/${userId}`
-        } else {
-          route = 'profile'
-        }
+        let route = `profile/${userId}`
         this.$http.get(route).then(response => {
           this.posts = response.data
         }).catch(error => {
@@ -161,13 +154,12 @@
       }
     },
     created () {
-      if (!this.isCurrentUserProfile) {
-        this.fetchUser()
-        this.getPosts(this.userId)
-      } else {
-        this.user = this.$auth.user()
-        this.getPosts()
-      }
+      // if (!this.isCurrentUserProfile) {
+      this.fetchUser()
+      // } else {
+      //   this.user = this.$auth.user()
+      // }
+      this.getPosts(this.userId)
     },
     mounted () {
       $('#remove-post-modal').modal()
