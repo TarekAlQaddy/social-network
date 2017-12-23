@@ -10,12 +10,12 @@
         <div class="meta">{{ post.created_at | moment('LLL') }}</div>
         <div class="description">
           <div class="image" v-if="hasImage">
-            <img style="max-height: 300px" :src="post.photo_url">
+            <img style="max-height: 300px" :src="API_END_POINT + post.photo_url">
           </div>
           {{ post.caption }}
         </div>
       </div>
-      <div v-if="canRemove" class="ui bottom attached red button" @click="showRemoveModal(post.id)">
+      <div v-if="canRemove" class="ui bottom attached red button" @click="showRemoveModal()">
         <i class="remove icon"></i>
         Remove Post
       </div>
@@ -37,8 +37,8 @@
       }
     },
     methods: {
-      showRemoveModal (id) {
-        this.$emit('showRemoveModal', id)
+      showRemoveModal () {
+        this.$emit('showRemoveModal', this.post.id)
       }
     }
   }

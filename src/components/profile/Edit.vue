@@ -110,7 +110,7 @@
           user: this.user
         }
         this.$http.put('user', putData).then(() => {
-          console.log(2)
+          this.$auth.user(this.user)
         }).catch(error => {
           alert('Something wrong happened!')
           console.log(error)
