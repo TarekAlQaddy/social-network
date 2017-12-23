@@ -15,20 +15,26 @@
               <option value="email">Email</option>
               <option value="name">First, Last name</option>
               <option value="hometown">Hometown</option>
-              <option value="email">Email</option>
+              <option value="caption">Caption</option>
             </select>
           </div>
         </div>
         <div style="text-align: right">
-          <div @click="getSearchResults" class="ui button green inverted" :class="{ 'disabled': search.text.length === 0 }">Search</div>
+          <div @click="getSearchResults" class="ui button green inverted"
+               :class="{ 'disabled': search.text.length === 0 }">Search</div>
         </div>
       </div>
     </div>
-    <div class="ui segment">
+    <div class="ui segment" v-if="searchResults.length > 0">
       <h2>Search Results</h2>
+      <div class="ui dimmer" :class="{ 'active': fetchingResults }">
+        <div class="ui loader"></div>
+      </div>
       <div class="ui four cards">
-        <FriendCard v-for='(friend, index) in searchResults'
-                    :key='friend.id' :user='friend' :showUnfriend="false"/>
+        <FriendCard v-if="lastSearchType !== 'caption'" v-for='(friend, index) in searchResults'
+                    :user='friend' :key="friend.id" :showUnfriend="false"/>
+
+        <Post v-for="post in searchResults" :post="post" :user="post.user" :key="post.id" :canRemove="false" />
       </div>
     </div>
   </div>
@@ -37,7 +43,8 @@
 <script>
   export default {
     components: {
-      FriendCard: require('@/components/friends/FriendCard').default
+      FriendCard: require('@/components/friends/FriendCard').default,
+      Post: require('@/components/profile/Post').default
     },
     data () {
       return {
@@ -45,20 +52,35 @@
           text: '',
           type: 'email'
         },
-        searchResults: []
+        searchResults: [],
+        lastSearchType: null,
+        fetchingResults: false
       }
     },
     methods: {
       getSearchResults () {
-        // TODO: send search request
+        this.fetchingResults = true
+        this.lastSearchType = this.search.type
+        let postParams = {
+          search: {
+            type: this.search.type,
+            value: this.search.text
+          }
+        }
+        this.$http.post('search', postParams).then(response => {
+          this.searchResults = response.data
+          this.fetchingResults = false
+        }).catch(() => {
+          this.fetchingResults = false
+          alert('Something wrong happened!')
+        })
       }
     },
     mounted () {
       $('#search-type').dropdown()
-      // TODO remove below
-      this.$http.get('friendships').then(response => {
-        this.searchResults = response.data
-      })
+      // this.$http.get('friendships').then(response => {
+      //   this.searchResults = response.data
+      // })
     }
   }
 </script>

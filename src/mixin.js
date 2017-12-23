@@ -26,8 +26,8 @@ export default {
         return 'users'
       }
     },
-    goToProfile (user) {
-      this.$router.push({ name: 'profile', params: { id: user.id } })
+    goToProfile (userId) {
+      this.$router.push({ name: 'profile', params: { id: userId } })
     }
   }
 }
