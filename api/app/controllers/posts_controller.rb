@@ -17,20 +17,40 @@ class PostsController < ApplicationController
   # TODO
   # GET /posts all public posts & friends private ones
   def index # Home
-    @posts = Post.where(is_public: true).or(Post.where(user: users)).or(Post.where(user: current_user))
-    @posts = @posts.order("created_at DESC")
-    render json: @posts.as_json.merge(photo: @post.photo.url(:medium)), :include => :user, status: :ok
+    posts = Post.where(is_public: true).or(Post.where(user: current_user.friends)).or(Post.where(user: current_user))
+    posts = posts.order("created_at DESC")
+    posts = posts.to_a
+    posts.map! do |post|
+      begin
+        photo_url = post.photo.url
+        post = post.as_json
+        post[:photo_url] = photo_url
+      rescue Paperclip::AdapterRegistry::NoHandlerError
+        post = post.as_json
+        post[:photo_url] = photo_url
+      end
+      post
+    end
+    # posts.each do |post|
+    #   begin
+    #     post.photo_url = post.photo.url
+    #   rescue Paperclip::AdapterRegistry::NoHandlerError
+    #     post.photo = nil
+    #   end
+    # end
+    render json: posts, :include => :user, status: :ok
   end
 
   # POST /posts
   def create
-    @post = current_user.posts.build(post_params)
-    @post.photo = Paperclip.io_adapters.for(post_params[:photo])
+    post = current_user.posts.build(post_params)
 
-    if @post.save
-      render json: @post, status: :created, location: @post
+    if post.save
+      post.photo = Paperclip.io_adapters.for(post_params[:photo])
+      post.save
+      render json: post, status: :created
     else
-      render json: @post.errors, status: :unprocessable_entity
+      render json: post.errors, status: :unprocessable_entity
     end
   end
 
