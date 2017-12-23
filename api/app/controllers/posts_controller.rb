@@ -1,9 +1,16 @@
 class PostsController < ApplicationController
   before_action :authenticate_user!
+  before_action :get_user, only: [:profile]
 
   # GET /posts profile page, current user posts
   def profile
-    @posts = current_user.posts
+    @posts = []
+    if @user == current_user
+      @posts = current_user.posts
+    else current_user.friends.include?(@user)
+      @posts = @user.posts
+    end
+
     render json: @posts, status: :ok
   end
 
@@ -37,5 +44,13 @@ class PostsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def post_params
       params.require(:post).permit(:caption, :is_public, :photo)
+    end
+
+    def get_user
+      if params.key?(:id)
+        @user = User.find(params[:id])
+      else
+        render status: :unauthroized
+      end
     end
 end
