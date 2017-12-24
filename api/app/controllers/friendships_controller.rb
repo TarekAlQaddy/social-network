@@ -5,7 +5,7 @@ class FriendshipsController < ApplicationController
   # GET /friendships
   # gets all friends of a certain user
   def index
-    render json: current_user.friends, status: :ok
+    render json: set_photo(current_user.friends), status: :ok
   end
 
   # POST /friendships
@@ -42,4 +42,12 @@ class FriendshipsController < ApplicationController
       end
     end
 
+    def set_photo(users)
+      users = users.to_a
+      users.map! do |user|
+        user[:profile_picture_file_name] = user.profile_picture.url(:medium)
+        user = user.as_json
+      end
+      return users
+    end
 end
