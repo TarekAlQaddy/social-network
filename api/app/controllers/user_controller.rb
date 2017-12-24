@@ -25,6 +25,7 @@ class UserController < ApplicationController
     profile_picture = Paperclip.io_adapters.for(encoded_image)
     profile_picture.original_filename = image_params[:filename]
     current_user.profile_picture = profile_picture
+    current_user.profile_picture_file_name = current_user.profile_picture.url(:medium)
 
     # current_user.update_attribute :profile_picture, decode_image
     current_user.save
