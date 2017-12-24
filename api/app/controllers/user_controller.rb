@@ -28,6 +28,11 @@ class UserController < ApplicationController
 
     # current_user.update_attribute :profile_picture, decode_image
     current_user.save
+
+    # Create Private Post
+    post = current_user.posts.create(caption: "Profile picture updated !", is_public: false, photo: current_user.profile_picture)
+    post.save
+
     render json: current_user.profile_picture, statue: :ok
   end
 
