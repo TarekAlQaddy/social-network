@@ -12,7 +12,9 @@
           <div class="image" v-if="hasImage">
             <img style="max-height: 300px" :src="API_END_POINT + post.photo_url">
           </div>
+          <div style="font-size: 2.5rem; line-height: 2.5rem;">
           {{ post.caption }}
+          </div>
         </div>
       </div>
       <div v-if="canRemove" class="ui bottom attached red button" @click="showRemoveModal()">
@@ -28,7 +30,6 @@
     props: ['post', 'user', 'canRemove'],
     data () {
       return {
-        toBeRemovedId: null
       }
     },
     computed: {

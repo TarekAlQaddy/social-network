@@ -48,7 +48,7 @@
             </div>
           </div>
         </div>
-        <textarea maxlength="200" v-model="post.text" name="new-post-text" id="new-post-text" cols="30" rows="10"></textarea>
+        <textarea maxlength="200" v-model="post.text" name="new-post-text" id="new-post-text" cols="30" rows="7"></textarea>
         <div class="remaining-chars">{{ remainingChars }}/200</div>
         <div style="text-align: right">
           <div class="image-upload">
@@ -129,9 +129,15 @@
         }
         this.$http.post('posts', postData).then(() => {
           this.fetchPosts()
+          this.resetPostInputs()
         }).catch(error => {
           console.log(error)
         })
+      },
+      resetPostInputs () {
+        this.post.text = ''
+        this.file = null
+        this.file64 = null
       },
       friendRequestAction (request, action) {
         let self = this
@@ -189,6 +195,7 @@
   #new-post-text {
     width: 100%;
     resize: none;
+    font-size: 2rem;
   }
   #new-post .remaining-chars {
     color: #aaa
