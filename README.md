@@ -1,26 +1,17 @@
 # social-network
 
-> A social network
+> A social network wep app built with vue.js & rails api
 
-## Build Vue
+# install dependencies
+# Vue
+
+System dependencies: `nodejs`
 
 ``` bash
-# install dependencies
 npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
-
-## Build API
+ # API
 
 * On ubuntu run `sudo apt install libpq-dev`
 
@@ -32,4 +23,15 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 * Database initialization `rake db:setup`
 
-* Run instructions: `rails server` then go to `http://localhost:3000`
+* Database creation `rake db:create && rake db:migrate && rake db:seed`
+
+# Development running
+
+root folder run
+`npm run dev`
+`npm run api`
+
+Wep App is served with hot reload at localhost:1111
+
+
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

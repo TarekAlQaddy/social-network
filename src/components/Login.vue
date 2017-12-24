@@ -24,8 +24,8 @@
               <input id="login-password" name="login-password" v-model="loginUser.password" type="password">
             </div>
           </div>
-          <div class="ui negative message" v-if="errors.length > 0">
-            <div class="header" v-for="error in errors">
+          <div class="ui negative message" v-if="loginErrors.length > 0">
+            <div class="header" v-for="error in loginErrors">
               {{ error }}
             </div>
           </div>
@@ -71,6 +71,11 @@
             <div class="field">
               <label for="signup-birthdate">Birthdate</label>
               <input type="date" id="signup-birthdate" name="signup-birthdate"  v-model="signupUser.birthdate">
+            </div>
+          </div>
+          <div class="ui negative message" v-if="signupErrors.length > 0">
+            <div class="header" v-for="error in signupErrors">
+              {{ error }}
             </div>
           </div>
           <div style="margin-top: 25px; text-align: right">
@@ -121,7 +126,8 @@
         currentState: 0,
         validLoginForm: false,
         validSignupForm: false,
-        errors: []
+        loginErrors: [],
+        signupErrors: []
       }
     },
     methods: {
@@ -136,12 +142,13 @@
           rememberMe: true,
           fetchUser: true,
           error: function (error) {
-            this.errors = error.body.errors
+            this.loginErrors = error.body.errors
           }
         })
       },
       signup () {
         if (!this.validSignupForm) return
+        let self = this
         let registerData = {
           email: this.signupUser.email,
           password: this.signupUser.password,
@@ -153,7 +160,13 @@
         this.$auth.register({
           params: registerData,
           rememberMe: true,
-          fetchUser: true
+          fetchUser: true,
+          success: function () {
+            self.currentState = self.viewStates.LOGIN
+          },
+          error: function (error) {
+            this.signupErrors = error.body.errors.full_messages
+          }
         })
       }
     },
