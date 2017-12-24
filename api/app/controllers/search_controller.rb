@@ -8,7 +8,8 @@ class SearchController < ApplicationController
     when "email"
       results = User.where("LOWER(email) LIKE ?", search_value)
     when "caption"
-      results = Post.where("LOWER(caption) LIKE ?", search_value)
+      results = Post.where("LOWER(caption) LIKE ?", search_value).order("created_at DESC")
+      results = add_image_and_user_to_post(results)
     when "hometown"
       results = User.where("LOWER(hometown) LIKE ?", search_value)
     when "name"
@@ -16,16 +17,33 @@ class SearchController < ApplicationController
     else
       results = {}
     end
-    if search_params[:type] === 'caption'
-      render json: results, status: :ok, :include => :user
-    else
-      render json: results, status: :ok
-    end
+
+    render json: results, status: :ok
   end
 
 
   private
-  def search_params
-    params.require(:search).permit(:type, :value)
-  end
+    def search_params
+      params.require(:search).permit(:type, :value)
+    end
+
+    def add_image_and_user_to_post(posts)
+      posts = posts.to_a
+      posts.map! do |post|
+        user = post.user
+        user[:profile_picture_file_name] = user.profile_picture.url(:medium)
+        begin
+          photo_url = post.photo.url
+          post = post.as_json
+          post[:user] = user
+          post[:photo_url] = photo_url
+        rescue Paperclip::AdapterRegistry::NoHandlerError
+          post = post.as_json
+          post[:user] = user
+          post[:photo_url] = photo_url
+        end
+        post
+      end
+      return posts
+    end
 end
